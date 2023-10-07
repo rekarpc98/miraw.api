@@ -45,7 +45,7 @@ public partial class StorageBroker : DbContext, IStorageBroker
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
-		SetUserReferences(modelBuilder);
+		SetZoneReferences(modelBuilder);
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

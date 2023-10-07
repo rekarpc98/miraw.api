@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Miraw.Api.Core.Models.Commons;
 using Miraw.Api.Core.Models.Users;
-using Miraw.Api.Core.Models.Zones;
+using Miraw.Api.Core.Models.ZoneOperators;
 
 namespace Miraw.Api.Core.Models.Operators;
 
@@ -12,5 +12,5 @@ public class Operator : Auditable
 	public User? User { get; set; }
 	
 	[JsonIgnore]
-	public IEnumerable<Zone> Zones { get; set; } = null!;
+	public IEnumerable<ZoneOperator> ZoneOperators { get; set; } = null!;
 }

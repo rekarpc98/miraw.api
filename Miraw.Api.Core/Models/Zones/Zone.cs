@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Miraw.Api.Core.Models.Commons;
-using Miraw.Api.Core.Models.Operators;
 using Miraw.Api.Core.Models.Regions;
+using Miraw.Api.Core.Models.ZoneOperators;
 using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Models.Zones;
@@ -14,5 +14,5 @@ public class Zone : Auditable
 	public Geometry Boundary { get; set; } = null!;
 	
 	[JsonIgnore]
-	public IEnumerable<Operator> Operators { get; set; } = null!;
+	public IEnumerable<ZoneOperator> ZoneOperators { get; set; } = null!;
 }
