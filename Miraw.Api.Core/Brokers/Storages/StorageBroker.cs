@@ -24,7 +24,7 @@ public partial class StorageBroker : DbContext, IStorageBroker
 
     IQueryable<T> SelectAll<T>() where T : class => Set<T>();
 
-    async ValueTask<T> SelectAsync<T>(params object[] @objectIds) where T : class =>
+    async ValueTask<T?> SelectAsync<T>(params object[] @objectIds) where T : class =>
         await FindAsync<T>(objectIds);
 
     async ValueTask<T> UpdateAsync<T>(T @object)
