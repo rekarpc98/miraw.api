@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Miraw.Api", "Miraw.Api\Miraw.Api.csproj", "{001DD574-37B3-4262-8081-7255F659D9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Miraw.Api.Core", "Miraw.Api.Core\Miraw.Api.Core.csproj", "{6798F88A-A374-4409-9072-1070D7875FDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Miraw.Api.Core", "Miraw.Api.Core\Miraw.Api.Core.csproj", "{4F0552A5-659F-4ADD-BEA6-2AECB47E9AA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{001DD574-37B3-4262-8081-7255F659D9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{001DD574-37B3-4262-8081-7255F659D9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{001DD574-37B3-4262-8081-7255F659D9FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6798F88A-A374-4409-9072-1070D7875FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6798F88A-A374-4409-9072-1070D7875FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6798F88A-A374-4409-9072-1070D7875FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6798F88A-A374-4409-9072-1070D7875FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0552A5-659F-4ADD-BEA6-2AECB47E9AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0552A5-659F-4ADD-BEA6-2AECB47E9AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0552A5-659F-4ADD-BEA6-2AECB47E9AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0552A5-659F-4ADD-BEA6-2AECB47E9AA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
