@@ -16,7 +16,12 @@ public partial class UserService : IUserService
 		_storageBroker = storageBroker;
 	}
 
-	public ValueTask<User> RegisterUserAsync(User user) => throw new NotImplementedException();
+	public ValueTask<User> RegisterUserAsync(User user) => TryCatch(async () =>
+	{
+		ValidateUserOnRegister(user);
+
+		return await _storageBroker.InsertUserAsync(user);
+	});
 
 	public IQueryable<User> RetrieveAllUsers()
 	{
