@@ -3,10 +3,9 @@
 // FREE TO USE AS LONG AS SOFTWARE FUNDS ARE DONATED TO THE POOR
 // ---------------------------------------------------------------
 
-namespace Miraw.Api.Core.Brokers.DateTimes
+namespace Miraw.Api.Core.Brokers.DateTimes;
+
+public interface IDateTimeBroker
 {
-    public interface IDateTimeBroker
-    {
-        DateTimeOffset GetCurrentDateTime();
-    }
+    DateTimeOffset GetCurrentDateTime();
 }
