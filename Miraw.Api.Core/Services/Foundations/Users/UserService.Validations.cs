@@ -62,7 +62,7 @@ public partial class UserService
 		new() { Condition = string.IsNullOrWhiteSpace(text), Message = "Text is required" };
 
 	static ValidationRule IsInvalidEmail(string emailText) =>
-		new() { Condition = emailText.Contains('@'), Message = "Email is invalid" };
+		new() { Condition = !emailText.Contains('@'), Message = "Email is invalid" };
 
 	static ValidationRule IsInvalidX(DateTimeOffset date) =>
 		new() { Condition = date == default, Message = "Date is required" };
