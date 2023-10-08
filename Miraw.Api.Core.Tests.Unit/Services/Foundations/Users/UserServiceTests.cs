@@ -30,6 +30,17 @@ public partial class UserServiceTests
 		return CreateUserFiller(date).Create();
 	}
 
+	static IQueryable<User> CreateRandomUsers(DateTimeOffset date)
+	{
+		var users = new List<User>();
+		for (int i = 0; i < GetRandomNumber(); i++)
+		{
+			users.Add(CreateUserFiller(date).Create());
+		}
+
+		return users.AsQueryable();
+	}
+	
 	static Filler<User> CreateUserFiller(DateTimeOffset date)
 	{
 		var filler = new Filler<User>();
@@ -67,4 +78,7 @@ public partial class UserServiceTests
 
 		return filler;
 	}
+	
+	static int GetRandomNumber() => new IntRange(min: 2, max: 90).GetValue();
+
 }
