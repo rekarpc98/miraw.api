@@ -18,7 +18,8 @@ public partial class UserService
 			(IsInvalid(user.RegionId), nameof(user.RegionId)),
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
 			(IfNotNullIsInvalidPhoneNumber(user.PhoneNumber), nameof(user.PhoneNumber)),
-			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber))
+			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber)),
+			(IsNotSame(user.UpdatedDate, user.CreatedDate, nameof(User.CreatedDate)), nameof(user.UpdatedDate))
 		);
 	}
 
