@@ -9,13 +9,13 @@ public partial class UserService
 	{
 		ValidateUser(user);
 
-		Validate((IsInvalidX(user.Id), nameof(user.Id)),
-			(IsInvalidX(user.Name), nameof(user.Name)),
-			(IsInvalidX(user.CreatedDate), nameof(user.CreatedDate)),
-			(IsInvalidX(user.UpdatedDate), nameof(user.UpdatedDate)),
-			(IsInvalidX(user.Email), nameof(user.Email)),
+		Validate((IsInvalid(user.Id), nameof(user.Id)),
+			(IsInvalid(user.Name), nameof(user.Name)),
+			(IsInvalid(user.CreatedDate), nameof(user.CreatedDate)),
+			(IsInvalid(user.UpdatedDate), nameof(user.UpdatedDate)),
+			(IsInvalid(user.Email), nameof(user.Email)),
 			(IsInvalidEmail(user.Email), nameof(user.Email)),
-			(IsInvalidX(user.RegionId), nameof(user.RegionId)),
+			(IsInvalid(user.RegionId), nameof(user.RegionId)),
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
 			(IfNotNullIsInvalidPhoneNumber(user.PhoneNumber), nameof(user.PhoneNumber)),
 			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber))
@@ -24,13 +24,13 @@ public partial class UserService
 
 	void ValidateUserOnModify(User user)
 	{
-		Validate((IsInvalidX(user.Id), nameof(user.Id)),
-			(IsInvalidX(user.Name), nameof(user.Name)),
-			(IsInvalidX(user.CreatedDate), nameof(user.CreatedDate)),
-			(IsInvalidX(user.UpdatedDate), nameof(user.UpdatedDate)),
-			(IsInvalidX(user.Email), nameof(user.Email)),
+		Validate((IsInvalid(user.Id), nameof(user.Id)),
+			(IsInvalid(user.Name), nameof(user.Name)),
+			(IsInvalid(user.CreatedDate), nameof(user.CreatedDate)),
+			(IsInvalid(user.UpdatedDate), nameof(user.UpdatedDate)),
+			(IsInvalid(user.Email), nameof(user.Email)),
 			(IsInvalidEmail(user.Email), nameof(user.Email)),
-			(IsInvalidX(user.RegionId), nameof(user.RegionId)),
+			(IsInvalid(user.RegionId), nameof(user.RegionId)),
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
 			(IfNotNullIsInvalidPhoneNumber(user.PhoneNumber), nameof(user.PhoneNumber)),
 			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber)),
@@ -39,7 +39,7 @@ public partial class UserService
 		);
 	}
 
-	static ValidationRule IsInvalidX(Guid id) => new() { Condition = id == Guid.Empty, Message = "Invalid X Id" };
+	static ValidationRule IsInvalid(Guid id) => new() { Condition = id == Guid.Empty, Message = "Invalid X Id" };
 
 	static ValidationRule IfNotNullIsInvalidLength(string? text, int length)
 	{
@@ -75,13 +75,13 @@ public partial class UserService
 		};
 	}
 
-	static ValidationRule IsInvalidX(string text) =>
+	static ValidationRule IsInvalid(string text) =>
 		new() { Condition = string.IsNullOrWhiteSpace(text), Message = "Text is required" };
 
 	static ValidationRule IsInvalidEmail(string emailText) =>
 		new() { Condition = !emailText.Contains('@'), Message = "Email is invalid" };
 
-	static ValidationRule IsInvalidX(DateTimeOffset date) =>
+	static ValidationRule IsInvalid(DateTimeOffset date) =>
 		new() { Condition = date == default, Message = "Date is required" };
 
 	ValidationRule IsNotRecent(DateTimeOffset date) =>
