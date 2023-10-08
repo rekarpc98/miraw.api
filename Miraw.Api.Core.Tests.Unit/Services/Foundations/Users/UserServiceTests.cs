@@ -25,10 +25,8 @@ public partial class UserServiceTests
 
 	static DateTimeOffset GetRandomDateTime() => new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-	static User CreateRandomUser(DateTimeOffset date)
-	{
-		return CreateUserFiller(date).Create();
-	}
+	static User CreateRandomUser() => CreateUserFiller(DateTimeOffset.UtcNow).Create();
+	static User CreateRandomUser(DateTimeOffset date) => CreateUserFiller(date).Create();
 
 	static IQueryable<User> CreateRandomUsers(DateTimeOffset date)
 	{

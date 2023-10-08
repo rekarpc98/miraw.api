@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 
 public partial class UserService
 {
-    static void ValidateUserOnRegister(User user)
+	static void ValidateUserOnRegister(User user)
 	{
 		ValidateUser(user);
 
@@ -19,6 +19,23 @@ public partial class UserService
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
 			(IfNotNullIsInvalidPhoneNumber(user.PhoneNumber), nameof(user.PhoneNumber)),
 			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber))
+		);
+	}
+
+	void ValidateUserOnModify(User user)
+	{
+		Validate((IsInvalidX(user.Id), nameof(user.Id)),
+			(IsInvalidX(user.Name), nameof(user.Name)),
+			(IsInvalidX(user.CreatedDate), nameof(user.CreatedDate)),
+			(IsInvalidX(user.UpdatedDate), nameof(user.UpdatedDate)),
+			(IsInvalidX(user.Email), nameof(user.Email)),
+			(IsInvalidEmail(user.Email), nameof(user.Email)),
+			(IsInvalidX(user.RegionId), nameof(user.RegionId)),
+			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
+			(IfNotNullIsInvalidPhoneNumber(user.PhoneNumber), nameof(user.PhoneNumber)),
+			(IfNotNullIsPhoneNumberContainNonDigit(user.PhoneNumber), nameof(user.PhoneNumber)),
+			(IsNotRecent(user.UpdatedDate), nameof(user.UpdatedDate)),
+			(IsSame(user.UpdatedDate, user.CreatedDate, nameof(user.CreatedDate)), nameof(user.UpdatedDate))
 		);
 	}
 
@@ -67,6 +84,28 @@ public partial class UserService
 	static ValidationRule IsInvalidX(DateTimeOffset date) =>
 		new() { Condition = date == default, Message = "Date is required" };
 
+	ValidationRule IsNotRecent(DateTimeOffset date) =>
+		new() { Condition = IsDateNotRecent(date), Message = "Date is not recent" };
+
+	static ValidationRule IsSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) =>
+		new ValidationRule { Condition = firstDate == secondDate, Message = $"Date is the same as {secondDateName}" };
+
+	static ValidationRule IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) =>
+		new ValidationRule { Condition = firstDate != secondDate, Message = $"Date is not the same as {secondDateName}" };
+
+	static ValidationRule IsNotSame(Guid firstId, Guid secondId, string secondIdName) =>
+		new() { Condition = firstId != secondId, Message = $"Id is not the same as {secondIdName}" };
+
+
+	bool IsDateNotRecent(DateTimeOffset date)
+	{
+		var currentDate = _dateTimeBroker.GetCurrentDateTime();
+
+		var timeDifference = currentDate - date;
+
+		return timeDifference.Duration() > TimeSpan.FromMinutes(1);
+	}
+
 	static void ValidateUser(User user)
 	{
 		if (user is null)
@@ -86,8 +125,28 @@ public partial class UserService
 				invalidUserException.UpsertDataList(key: parameter, value: rule.Message);
 			}
 		}
-		
+
 		invalidUserException.ThrowIfContainsErrors();
+	}
+
+	static void ValidateStorageUser(User? storageUser, Guid userId)
+	{
+		if (storageUser is null)
+		{
+			throw new NotFoundUserException(userId);
+		}
+	}
+
+	static void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
+	{
+		Validate(
+			(IsNotSame(inputUser.CreatedDate, storageUser.CreatedDate, nameof(User.CreatedDate)),
+				nameof(User.CreatedDate)),
+			(IsSame(inputUser.UpdatedDate, storageUser.UpdatedDate, nameof(User.UpdatedDate)),
+				nameof(User.UpdatedDate)),
+			(IsNotSame(inputUser.CreatedBy, storageUser.CreatedBy, nameof(storageUser.CreatedBy)),
+				nameof(storageUser.CreatedBy))
+		);
 	}
 }
 

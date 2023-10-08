@@ -107,7 +107,7 @@ public partial class UserService
 
 	Exception CreateAndLogValidationException(Exception exception)
 	{
-		var userDependencyValidationException = new UserDependencyValidationException(exception);
+		var userDependencyValidationException = new UserValidationException(exception);
 		_loggingBroker.LogError(userDependencyValidationException);
 		
 		return userDependencyValidationException;

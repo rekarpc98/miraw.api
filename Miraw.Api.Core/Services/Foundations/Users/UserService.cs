@@ -7,11 +7,13 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 
 public partial class UserService : IUserService
 {
+	readonly IDateTimeBroker _dateTimeBroker;
 	readonly ILoggingBroker _loggingBroker;
 	readonly IStorageBroker _storageBroker;
 
 	public UserService(IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker, IStorageBroker storageBroker)
 	{
+		_dateTimeBroker = dateTimeBroker;
 		_loggingBroker = loggingBroker;
 		_storageBroker = storageBroker;
 	}
@@ -30,10 +32,18 @@ public partial class UserService : IUserService
 		throw new NotImplementedException();
 	}
 
-	public async ValueTask<User> ModifyUserAsync(User user)
-	{
-		throw new NotImplementedException();
-	}
+	public async ValueTask<User> ModifyUserAsync(User user) =>
+		await TryCatch(async () =>
+		{
+			ValidateUserOnModify(user);
+			
+			var maybeUser = await _storageBroker.SelectUserByIdAsync(user.Id);
+			
+			ValidateStorageUser(maybeUser, user.Id);
+			ValidateAgainstStorageUserOnModify(user, maybeUser!);
+
+			return await _storageBroker.UpdateUserAsync(user);
+		});
 
 	public async ValueTask<User> RemoveUserByIdAsync(Guid userId)
 	{
