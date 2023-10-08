@@ -26,7 +26,6 @@ public partial class UserServiceTests
 		var expectedUserValidationException = new UserValidationException(invalidUserException);
 
 		// when
-
 		ValueTask<User> registerUserTask = _userService.RegisterUserAsync(invalidUser);
 
 		// then
