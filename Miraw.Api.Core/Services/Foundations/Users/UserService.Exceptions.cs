@@ -9,6 +9,7 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 public partial class UserService
 {
 	delegate ValueTask<User> ReturningUserFunction();
+	delegate IQueryable<User> ReturningUsersFunction();
 
 	async ValueTask<User> TryCatch(ReturningUserFunction function)
 	{
@@ -51,6 +52,26 @@ public partial class UserService
 			var failedUserStorageException = new FailedUserStorageException(dbUpdateException);
 
 			throw CreateAndLogDependencyException(failedUserStorageException);
+		}
+		catch (Exception exception)
+		{
+			var failedUserServiceException = new FailedUserServiceException(exception);
+
+			throw CreateAndLogServiceException(failedUserServiceException);
+		}
+	}
+	
+	IQueryable<User> TryCatch(ReturningUsersFunction function)
+	{
+		try
+		{
+			return function();
+		}
+		catch (SqlException ex)
+		{
+			var failedUserStorageException = new FailedUserStorageException(ex);
+			
+			throw CreateAndLogCriticalDependencyException(failedUserStorageException);
 		}
 		catch (Exception exception)
 		{

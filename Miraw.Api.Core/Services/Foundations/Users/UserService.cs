@@ -23,10 +23,7 @@ public partial class UserService : IUserService
 		return await _storageBroker.InsertUserAsync(user);
 	});
 
-	public IQueryable<User> RetrieveAllUsers()
-	{
-		throw new NotImplementedException();
-	}
+	public IQueryable<User> RetrieveAllUsers() => TryCatch(() => _storageBroker.SelectAllUsers());
 
 	public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)
 	{
