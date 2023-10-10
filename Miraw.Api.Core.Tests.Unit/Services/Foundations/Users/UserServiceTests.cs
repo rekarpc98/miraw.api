@@ -27,6 +27,7 @@ public partial class UserServiceTests
 
 	static User CreateRandomUser() => CreateUserFiller(DateTimeOffset.UtcNow).Create();
 	static User CreateRandomUser(DateTimeOffset date) => CreateUserFiller(date).Create();
+	static User CreateRandomUser(DateTimeOffset date, string name) => CreateUserFiller(date, name).Create();
 
 	static IQueryable<User> CreateRandomUsers(DateTimeOffset date)
 	{
@@ -63,6 +64,44 @@ public partial class UserServiceTests
 			.Use(userId)
 			.OnProperty(x => x.Name)
 			.Use(new RealNames(NameStyle.FirstName))
+			.OnProperty(x => x.Email)
+			.Use(new EmailAddresses())
+			.OnProperty(x => x.PhoneNumber)
+			.Use(new PatternGenerator("{N:13}"))
+			.OnProperty(x => x.RegionId)
+			.Use(regionId)
+			.OnProperty(x => x.Gender)
+			.Use(randomGender)
+			.OnProperty(x => x.Region)
+			.IgnoreIt();
+
+		return filler;
+	}
+	
+	static Filler<User> CreateUserFiller(DateTimeOffset date, string name)
+	{
+		var filler = new Filler<User>();
+		Guid userId = Guid.NewGuid();
+		Guid regionId = Guid.NewGuid();
+
+		var randomNumber = Random.Shared.Next(0, 1);
+		var randomGender = (Gender)randomNumber;
+
+		filler.Setup()
+			.OnProperty(x => x.CreatedDate)
+			.Use(date)
+			.OnProperty(x => x.UpdatedDate)
+			.Use(date)
+			.OnProperty(x => x.DeletedDate)
+			.IgnoreIt()
+			.OnProperty(x => x.DeletedBy)
+			.IgnoreIt()
+			.OnProperty(x => x.CreatedBy)
+			.Use(userId)
+			.OnProperty(x => x.UpdatedBy)
+			.Use(userId)
+			.OnProperty(x => x.Name)
+			.Use(name)
 			.OnProperty(x => x.Email)
 			.Use(new EmailAddresses())
 			.OnProperty(x => x.PhoneNumber)
