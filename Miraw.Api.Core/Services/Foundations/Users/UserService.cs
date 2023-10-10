@@ -31,6 +31,19 @@ public partial class UserService : IUserService
 	{
 		throw new NotImplementedException();
 	}
+	public async ValueTask<User> RetrieveUserByNameAsync(string userName)
+	{
+		return await TryCatch(async () =>
+		{
+			ValidateUserName(userName);
+
+			User? maybeUser = await _storageBroker.SelectUserByNameAsync(userName);
+
+			ValidateStorageUser(maybeUser, userName);
+
+			return maybeUser!;
+		});
+	}
 
 	public async ValueTask<User> ModifyUserAsync(User user) =>
 		await TryCatch(async () =>

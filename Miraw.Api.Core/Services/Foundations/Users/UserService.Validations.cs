@@ -137,6 +137,14 @@ public partial class UserService
 			throw new NotFoundUserException(userId);
 		}
 	}
+	
+	static void ValidateStorageUser(User? storageUser, string userName)
+	{
+		if (storageUser is null)
+		{
+			throw new NotFoundUserException(userName);
+		}
+	}
 
 	static void ValidateAgainstStorageUserOnModify(User inputUser, User storageUser)
 	{
@@ -148,6 +156,11 @@ public partial class UserService
 			(IsNotSame(inputUser.CreatedBy, storageUser.CreatedBy, nameof(storageUser.CreatedBy)),
 				nameof(storageUser.CreatedBy))
 		);
+	}
+
+	static void ValidateUserName(string userName)
+	{ 
+		Validate((IsInvalid(userName), nameof(userName)));
 	}
 }
 
