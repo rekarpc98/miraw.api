@@ -16,10 +16,13 @@ public partial class StorageBroker
 	public async ValueTask<User?> SelectUserByNameAsync(string userName)
 	{
 		userName = userName.Trim();
-		return await Users.FirstOrDefaultAsync(user => user.Name == userName);
+		return await Users.FirstOrDefaultAsync(user => SoundsLike(user.Name) == SoundsLike(userName));
 	}
 
 	public async ValueTask<User> UpdateUserAsync(User user) => await UpdateAsync(user);
 
 	public async ValueTask<User> DeleteUserAsync(User user) => await DeleteAsync(user);
+
+	[DbFunction(Name = "SOUNDEX", Schema = "")]
+	public static string SoundsLike(string keyword) => throw new NotImplementedException();
 }
