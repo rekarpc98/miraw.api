@@ -116,7 +116,7 @@ public partial class UserService
 	Exception CreateAndLogServiceException(Exception exception)
 	{
 		var userServiceException = new UserServiceException(exception);
-		_loggingBroker.LogError(exception);
+		_loggingBroker.LogError(userServiceException);
 		
 		return userServiceException;
 	}

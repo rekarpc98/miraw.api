@@ -1,5 +1,4 @@
-﻿using System.IO.IsolatedStorage;
-using Miraw.Api.Core.Models.Users;
+﻿using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Models.Users.Exceptions;
 using Moq;
 

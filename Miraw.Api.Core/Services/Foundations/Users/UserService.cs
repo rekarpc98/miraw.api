@@ -31,17 +31,15 @@ public partial class UserService : IUserService
 	{
 		throw new NotImplementedException();
 	}
-	public async ValueTask<User> RetrieveUserByNameAsync(string userName)
+	public IQueryable<User> RetrieveUsersByName(string userName)
 	{
-		return await TryCatch(async () =>
+		return TryCatch(() =>
 		{
 			ValidateUserName(userName);
 
-			User? maybeUser = await _storageBroker.SelectUserByNameAsync(userName);
+			IQueryable<User> users =  _storageBroker.SelectUsersByName(userName);
 
-			ValidateStorageUser(maybeUser, userName);
-
-			return maybeUser!;
+			return users;
 		});
 	}
 

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
 using Miraw.Api.Core.Models.Users;
+using Miraw.Api.Core.Models.Users.Exceptions;
 using Moq;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Users;
@@ -12,20 +13,21 @@ public partial class UserServiceTests
 	{
 		// given
 		DateTimeOffset randomDateTime = GetRandomDateTime();
-		User randomUser = CreateRandomUser(randomDateTime);
-		User storageUser = randomUser.DeepClone();
-		User expectedUser = storageUser.DeepClone();
-		var userName = randomUser.Name;
+		IQueryable<User> randomUsers = CreateRandomUsers(randomDateTime);
+		var firstUser = randomUsers.First();
+		IQueryable<User> expectedUsers = randomUsers.Where(x => x.Id == firstUser.Id).DeepClone();
+		IQueryable<User> storageUsers = randomUsers.Where(x => x.Id == firstUser.Id).DeepClone();
+		var userName = firstUser.Name;
 
-		_storageBrokerMock.Setup(broker => broker.SelectUserByNameAsync(userName)).ReturnsAsync(storageUser);
+		_storageBrokerMock.Setup(broker => broker.SelectUsersByName(userName)).Returns(storageUsers);
 		
 		// when
-		User actualUser = await _userService.RetrieveUserByNameAsync(userName);
+		IQueryable<User> actualUser = _userService.RetrieveUsersByName(userName);
 		
 		// then
-		actualUser.Should().BeEquivalentTo(expectedUser);
+		actualUser.Should().BeEquivalentTo(expectedUsers);
 		
-		_storageBrokerMock.Verify(x => x.SelectUserByNameAsync(userName), Times.Once);
+		_storageBrokerMock.Verify(x => x.SelectUsersByName(userName), Times.Once);
 		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
 		
 		_dateTimeBrokerMock.VerifyNoOtherCalls();
@@ -33,35 +35,30 @@ public partial class UserServiceTests
 		_loggingBrokerMock.VerifyNoOtherCalls();
 	}
 	
-	[Theory]
-	[InlineData("Mhammad","Mhammad")]
-	[InlineData("Mhammad","Mhommad")]
-	[InlineData("Mhammad","Mhamad")]
-	[InlineData("Mhammad","Mhammd")]
-	[InlineData("Mhammad","Mhamma")]
-	[InlineData("Mhammad","Mhamm")]
-	[InlineData("Mhammad","Mham")]
-	[InlineData("Mhammad","Mha")]
-	[InlineData("Mhammad","Mh")]
-	[InlineData("Mhammad","M")]
-	public async Task ShouldRetrieveUserBySlightlyDifferentName(string userName, string searchWord)
+	[Fact]
+	public async Task ShouldThrowUserServiceExceptionOnEmptyOrNullSearchKeywordAndLogIt()
 	{
 		// given
 		DateTimeOffset randomDateTime = GetRandomDateTime();
-		User randomUser = CreateRandomUser(randomDateTime, userName);
-		User storageUser = randomUser.DeepClone();
-		User expectedUser = storageUser.DeepClone();
+		var randomUsers = CreateRandomUsers(randomDateTime);
+		var storageUser = randomUsers.DeepClone();
 		
-		_storageBrokerMock.Setup(broker => broker.SelectUserByNameAsync(searchWord)).ReturnsAsync(storageUser);
+		_storageBrokerMock.Setup(broker => broker.SelectUsersByName("")).Returns(storageUser);
 		
 		// when
-		User actualUser = await _userService.RetrieveUserByNameAsync(searchWord);
+		// ---
 		
 		// then
-		actualUser.Should().BeEquivalentTo(expectedUser);
 		
-		_storageBrokerMock.Verify(x => x.SelectUserByNameAsync(searchWord), Times.Once);
+		await Assert.ThrowsAsync<UserServiceException>( async () =>
+		{
+			_userService.RetrieveUsersByName("");
+			Task.CompletedTask.Wait();
+		});
+		
+		_storageBrokerMock.Verify(x => x.SelectUsersByName(""), Times.Never);
 		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
+		_loggingBrokerMock.Verify(x => x.LogError(It.IsAny<UserServiceException>()),Times.Once);
 		
 		_dateTimeBrokerMock.VerifyNoOtherCalls();
 		_storageBrokerMock.VerifyNoOtherCalls();
