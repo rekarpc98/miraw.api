@@ -52,7 +52,7 @@ public partial class UserServiceTests
 		User storageUser = randomUser.DeepClone();
 		User expectedUser = storageUser.DeepClone();
 		
-		_storageBrokerMock.Setup(broker => broker.SelectUserByNameAsync(userName)).ReturnsAsync(storageUser);
+		_storageBrokerMock.Setup(broker => broker.SelectUserByNameAsync(searchWord)).ReturnsAsync(storageUser);
 		
 		// when
 		User actualUser = await _userService.RetrieveUserByNameAsync(searchWord);
@@ -60,7 +60,7 @@ public partial class UserServiceTests
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
 		
-		_storageBrokerMock.Verify(x => x.SelectUserByNameAsync(userName), Times.Once);
+		_storageBrokerMock.Verify(x => x.SelectUserByNameAsync(searchWord), Times.Once);
 		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
 		
 		_dateTimeBrokerMock.VerifyNoOtherCalls();
