@@ -1,3 +1,4 @@
+using Exceptionless;
 using Miraw.Api.Core.Brokers.DateTimes;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
@@ -15,6 +16,10 @@ builder.Services.AddScoped<IStorageBroker, StorageBroker>();
 builder.Services.AddScoped<IDateTimeBroker, DateTimeBroker>();
 builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
 
+// Exceptionless__ApiKey
+var exceptionlessApiKey = builder.Configuration.GetSection("Exceptionless:ApiKey").Value;
+builder.Services.AddExceptionless(exceptionlessApiKey!);
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -24,6 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionless();
 
 app.UseAuthorization();
 
