@@ -1,4 +1,5 @@
-﻿using Miraw.Api.Core.Brokers.Storages;
+﻿using Miraw.Api.Core.Brokers.Loggings;
+using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Services.Foundations.Regions;
 using Moq;
@@ -10,13 +11,15 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Regions;
 public partial class RegionServiceTests
 {
 	readonly Mock<IStorageBroker> _storageBrokerMock;
+	readonly Mock<ILoggingBroker> _loggingBrokerMock;
 	readonly IRegionService _regionService;
 
 	public RegionServiceTests()
 	{
 		_storageBrokerMock = new Mock<IStorageBroker>();
-
-		_regionService = new RegionService(_storageBrokerMock.Object);
+		_loggingBrokerMock = new Mock<ILoggingBroker>();
+		
+		_regionService = new RegionService(_storageBrokerMock.Object, _loggingBrokerMock.Object);
 	}
 
 	static Region CreateRandomRegion()

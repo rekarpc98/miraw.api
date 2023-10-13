@@ -7,7 +7,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Users;
 public partial class UserServiceTests
 {
 	[Fact]
-	public async Task ShouldThrowValidationExceptionOnRegisterIfCreateAndUpdateDatesAreNotSameAndLogItAsync()
+	public async Task ShouldThrowUserValidationExceptionOnRegisterIfCreateAndUpdateDatesAreNotSameAndLogItAsync()
 	{
 		// given
 		var randomUser = CreateRandomUser();
