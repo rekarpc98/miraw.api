@@ -16,23 +16,14 @@ public partial class RegionService : IRegionService
 		_storageBroker = storageBroker;
 		_loggingBroker = loggingBroker;
 	}
-	public async ValueTask<Region> CreateRegionAsync(Region region)
-	{
-		try
+
+	public async ValueTask<Region> CreateRegionAsync(Region region) =>
+		await TryCatch(async () =>
 		{
 			ValidateRegionOnCreate(region);
-			
+
 			return await _storageBroker.InsertRegionAsync(region);
-		}
-		catch (NullRegionException nullRegionException)
-		{
-			var regionValidationException = new RegionValidationException(nullRegionException);
-			
-			_loggingBroker.LogError(regionValidationException);
-			
-			throw regionValidationException;
-		}
-	}
+		});
 
 	public async ValueTask<Region> GetRegionAsync(Guid regionId)
 	{
