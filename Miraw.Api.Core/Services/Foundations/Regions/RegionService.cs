@@ -14,7 +14,7 @@ public partial class RegionService : IRegionService
 	}
 	public async ValueTask<Region> CreateRegionAsync(Region region)
 	{
-		throw new NotImplementedException();
+		return await _storageBroker.InsertRegionAsync(region);
 	}
 
 	public async ValueTask<Region> GetRegionAsync(Guid regionId)

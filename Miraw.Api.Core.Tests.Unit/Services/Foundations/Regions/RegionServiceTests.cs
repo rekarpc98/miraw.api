@@ -21,12 +21,12 @@ public partial class RegionServiceTests
 
 	static Region CreateRandomRegion()
 	{
-		Filler<Region> filler = CreateUserFiller(DateTimeOffset.UtcNow);
+		Filler<Region> filler = CreateRegionFiller(DateTimeOffset.UtcNow);
 		
 		return filler.Create();
 	}
 	
-	static Filler<Region> CreateUserFiller(DateTimeOffset date)
+	static Filler<Region> CreateRegionFiller(DateTimeOffset date)
 	{
 		var filler = new Filler<Region>();
 		Guid userId = Guid.NewGuid();
