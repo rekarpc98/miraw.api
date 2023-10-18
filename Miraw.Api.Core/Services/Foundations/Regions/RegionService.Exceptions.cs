@@ -7,11 +7,11 @@ public partial class RegionService
 {
 	delegate ValueTask<Region> ReturningRegionFunction();
 
-	ValueTask<Region> TryCatch(ReturningRegionFunction returningRegionFunction)
+	async ValueTask<Region> TryCatch(ReturningRegionFunction returningRegionFunction)
 	{
 		try
 		{
-			return returningRegionFunction();
+			return await returningRegionFunction();
 		}
 		catch (NullRegionException nullRegionException)
 		{

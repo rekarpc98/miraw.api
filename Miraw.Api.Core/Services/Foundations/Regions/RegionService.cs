@@ -17,8 +17,7 @@ public partial class RegionService : IRegionService
 		_loggingBroker = loggingBroker;
 	}
 
-	public async ValueTask<Region> CreateRegionAsync(Region region) =>
-		await TryCatch(async () =>
+	public ValueTask<Region> CreateRegionAsync(Region region) => TryCatch(async () =>
 		{
 			ValidateRegionOnCreate(region);
 
