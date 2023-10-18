@@ -17,4 +17,12 @@ public partial class RegionService
 			throw new NullRegionException();
 		}
 	}
+
+	static void ValidateRegionId(Guid regionId)
+	{
+		if (regionId == Guid.Empty)
+		{
+			throw new InvalidRegionException(parameterName: nameof(Region.Id), parameterValue: regionId);
+		}
+	}
 }
