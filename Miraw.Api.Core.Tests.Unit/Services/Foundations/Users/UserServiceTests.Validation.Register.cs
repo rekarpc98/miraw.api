@@ -15,7 +15,7 @@ public partial class UserServiceTests
 
 		invalidUser.UpdatedDate = invalidUser.UpdatedDate.AddDays(3);
 
-		var invalidUserException = new UserValidationException();
+		var invalidUserException = new InvalidUserException();
 
 		invalidUserException.AddData(
 			key: nameof(User.UpdatedDate),
@@ -30,8 +30,9 @@ public partial class UserServiceTests
 		// then
 		await Assert.ThrowsAsync<UserValidationException>(() => registerUserTask.AsTask());
 
-		_loggingBrokerMock.Verify(x => x.LogError(It.IsAny<UserValidationException>()), Times.Once);
-		
+		_loggingBrokerMock.Verify(x =>
+			x.LogError(It.Is(SameExceptionAs(expectedUserValidationException))), Times.Once);
+
 		_storageBrokerMock.Verify(x => x.InsertUserAsync(It.IsAny<User>()), Times.Never);
 	}
 }

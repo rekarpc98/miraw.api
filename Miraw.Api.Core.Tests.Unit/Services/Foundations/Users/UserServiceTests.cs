@@ -1,10 +1,13 @@
-﻿using Miraw.Api.Core.Brokers.DateTimes;
+﻿using System.Linq.Expressions;
+using Miraw.Api.Core.Brokers.DateTimes;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Users;
+using Miraw.Api.Core.Models.Users.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Users;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Users;
 
@@ -39,7 +42,7 @@ public partial class UserServiceTests
 
 		return users.AsQueryable();
 	}
-	
+
 	static Filler<User> CreateUserFiller(DateTimeOffset date)
 	{
 		var filler = new Filler<User>();
@@ -77,7 +80,7 @@ public partial class UserServiceTests
 
 		return filler;
 	}
-	
+
 	static Filler<User> CreateUserFiller(DateTimeOffset date, string name)
 	{
 		var filler = new Filler<User>();
@@ -115,7 +118,11 @@ public partial class UserServiceTests
 
 		return filler;
 	}
-	
+
 	static int GetRandomNumber() => new IntRange(min: 2, max: 90).GetValue();
 
+	static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedUserValidationException)
+	{
+		return actualException => actualException.SameExceptionAs(expectedUserValidationException);
+	}
 }

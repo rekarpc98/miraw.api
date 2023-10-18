@@ -30,10 +30,8 @@
 // 		_loggingBrokerMock.Verify(broker =>
 // 			broker.LogError(It.IsAny<RegionValidationException>()), Times.Once);
 //
-// 		// TODO: Fix this test		
-// 		// _loggingBrokerMock.Verify(broker =>
-// 		// 		broker.LogError(It.Is(SameExceptionAs(regionValidationException))),
-// 		// 	Times.Once);
+// 		_loggingBrokerMock.Verify(broker =>
+//		broker.LogError(It.Is(SameExceptionAs(regionValidationException))), Times.Once);
 //
 // 		
 // 		_storageBrokerMock.Verify(broker =>

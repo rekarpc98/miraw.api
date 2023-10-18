@@ -1,10 +1,13 @@
-﻿using Miraw.Api.Core.Brokers.Loggings;
+﻿using System.Linq.Expressions;
+using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Regions;
+using Miraw.Api.Core.Models.Users.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Regions;
 using Moq;
 using NetTopologySuite.Geometries;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Regions;
 
@@ -63,5 +66,10 @@ public partial class RegionServiceTests
 			})));
 
 		return filler;
+	}
+
+	static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedUserValidationException)
+	{
+		return actualException => actualException.SameExceptionAs(expectedUserValidationException);
 	}
 }
