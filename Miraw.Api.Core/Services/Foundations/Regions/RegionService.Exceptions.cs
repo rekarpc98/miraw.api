@@ -15,19 +15,20 @@ public partial class RegionService
 		}
 		catch (NullRegionException nullRegionException)
 		{
-			var regionValidationException = new RegionValidationException(nullRegionException);
-			
-			_loggingBroker.LogError(regionValidationException);
-			
-			throw regionValidationException;
+			throw CreateAndLogValidationException(nullRegionException);
 		}
 		catch (NotFoundRegionException notFoundRegionException)
 		{
-			var regionValidationException = new RegionValidationException(notFoundRegionException);
-			
-			_loggingBroker.LogError(regionValidationException);
-			
-			throw regionValidationException;
+			throw CreateAndLogValidationException(notFoundRegionException);
 		}
+	}
+
+	RegionValidationException CreateAndLogValidationException(Exception exception)
+	{
+		var regionValidationException = new RegionValidationException(exception);
+		
+		_loggingBroker.LogError(regionValidationException);
+		
+		return regionValidationException;
 	}
 }
