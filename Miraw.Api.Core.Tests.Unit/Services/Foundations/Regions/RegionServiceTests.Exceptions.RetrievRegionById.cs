@@ -30,6 +30,8 @@ public partial class RegionServiceTests
 		_loggingBrokerMock.Verify(x =>
 				x.LogError(It.Is(SameExceptionAs(expectedRegionValidationException))),
 			Times.Once());
+		
+		_loggingBrokerMock.VerifyNoOtherCalls();
 	}
 	
 	[Fact]
@@ -56,5 +58,7 @@ public partial class RegionServiceTests
 		_loggingBrokerMock.Verify(x =>
 				x.LogError(It.Is(SameExceptionAs(expectedRegionValidationException))),
 			Times.Once());
+		
+		_loggingBrokerMock.VerifyNoOtherCalls();
 	}
 }
