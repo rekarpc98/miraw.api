@@ -7,6 +7,32 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Regions;
 public partial class RegionServiceTests
 {
 	[Fact]
+	public void ShouldThrowValidationExceptionOnRetrieveWhenIdIsInvalidAndLogItAsync()
+	{
+		// given
+		var invalidRegionId = Guid.Empty;
+		Guid inputRegionId = invalidRegionId;
+
+		var invalidRegionException =
+			new InvalidRegionException(parameterName: nameof(Region.Id), parameterValue: inputRegionId);
+        
+		var expectedRegionValidationException =
+			new RegionValidationException(invalidRegionException);
+
+		// when
+		ValueTask<Region> retrieveRegionTask =
+			_regionService.GetRegionAsync(inputRegionId);
+
+		// then
+		Assert.ThrowsAsync<RegionValidationException>(() =>
+			retrieveRegionTask.AsTask());
+
+		_loggingBrokerMock.Verify(x =>
+				x.LogError(It.Is(SameExceptionAs(expectedRegionValidationException))),
+			Times.Once());
+	}
+	
+	[Fact]
 	public void ShouldThrowValidationExceptionOnRetrieveWhenRegionNotFoundAndLogItAsync()
 	{
 		// given
