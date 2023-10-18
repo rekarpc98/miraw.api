@@ -13,6 +13,10 @@ public partial class RegionService
 		{
 			return await returningRegionFunction();
 		}
+		catch (InvalidRegionException invalidRegionException)
+		{
+			throw CreateAndLogValidationException(invalidRegionException);
+		}
 		catch (NullRegionException nullRegionException)
 		{
 			throw CreateAndLogValidationException(nullRegionException);
