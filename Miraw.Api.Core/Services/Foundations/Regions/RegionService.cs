@@ -17,21 +17,25 @@ public partial class RegionService : IRegionService
 		_loggingBroker = loggingBroker;
 	}
 
-	public ValueTask<Region> CreateRegionAsync(Region region) => TryCatch(async () =>
+	public ValueTask<Region> CreateRegionAsync(Region region) =>
+		TryCatch(async () =>
 		{
 			ValidateRegionOnCreate(region);
 
 			return await _storageBroker.InsertRegionAsync(region);
 		});
 
-	public ValueTask<Region> GetRegionAsync(Guid regionId) => TryCatch( async () =>
-	{
-		ValidateRegionId(regionId);
+	public ValueTask<Region> GetRegionAsync(Guid regionId) =>
+		TryCatch(async () =>
+		{
+			ValidateRegionId(regionId);
 
-		Region? storageRegion =  await _storageBroker.SelectRegionByIdAsync(regionId);
-		
-		return storageRegion!;
-	});
+			Region? storageRegion = await _storageBroker.SelectRegionByIdAsync(regionId);
+
+			ValidateRegionStorage(storageRegion, regionId);
+
+			return storageRegion!;
+		});
 
 	public async ValueTask<Region> GetRegionAsync(PointF coordinates)
 	{

@@ -25,4 +25,12 @@ public partial class RegionService
 			throw new InvalidRegionException(parameterName: nameof(Region.Id), parameterValue: regionId);
 		}
 	}
+
+	static void ValidateRegionStorage(Region? storageRegion, Guid regionId)
+	{
+		if (storageRegion is null)
+		{
+			throw new NotFoundRegionException(regionId);
+		}
+	}
 }

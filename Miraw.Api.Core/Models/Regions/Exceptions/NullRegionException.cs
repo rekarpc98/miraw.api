@@ -7,6 +7,5 @@ public class NullRegionException : Xeption
 {
 	public NullRegionException() : base("Region is null.")
 	{
-		
 	}
 }

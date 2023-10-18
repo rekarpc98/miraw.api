@@ -21,5 +21,13 @@ public partial class RegionService
 			
 			throw regionValidationException;
 		}
+		catch (NotFoundRegionException notFoundRegionException)
+		{
+			var regionValidationException = new RegionValidationException(notFoundRegionException);
+			
+			_loggingBroker.LogError(regionValidationException);
+			
+			throw regionValidationException;
+		}
 	}
 }
