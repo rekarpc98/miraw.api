@@ -15,12 +15,12 @@ public class ZoneService : IZoneService
 	
 	public async ValueTask<Zone> CreateZoneAsync(Zone zone) => await storageBroker.InsertZoneAsync(zone);
 
-	public async ValueTask<Zone> RetrieveZoneAsync(Guid zoneId)
+	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId)
 	{
 		throw new NotImplementedException();
 	}
 
-	public async ValueTask<Zone> RetrieveZoneAsync(Point coordinates)
+	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate)
 	{
 		throw new NotImplementedException();
 	}
