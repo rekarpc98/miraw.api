@@ -1,4 +1,5 @@
-﻿using Miraw.Api.Core.Brokers.Storages;
+﻿using Miraw.Api.Core.Brokers.Loggings;
+using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Zones;
 using NetTopologySuite.Geometries;
 
@@ -6,11 +7,13 @@ namespace Miraw.Api.Core.Services.Foundations.Zones;
 
 public class ZoneService : IZoneService
 {
-	readonly IStorageBroker storageBroker;
+	private readonly IStorageBroker storageBroker;
+	private readonly ILoggingBroker loggingBroker;
 
-	public ZoneService(IStorageBroker storageBroker)
+	public ZoneService(IStorageBroker storageBroker, ILoggingBroker loggingBroker)
 	{
 		this.storageBroker = storageBroker;
+		this.loggingBroker = loggingBroker;
 	}
 
 	public async ValueTask<Zone> CreateZoneAsync(Zone zone) => await storageBroker.InsertZoneAsync(zone);

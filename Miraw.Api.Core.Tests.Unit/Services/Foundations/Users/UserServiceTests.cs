@@ -120,7 +120,7 @@ public partial class UserServiceTests
 
 	private static int GetRandomNumber() => new IntRange(min: 2, max: 90).GetValue();
 
-	private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedUserValidationException)
+	private static Expression<Func<Xeption, bool>> SameExceptionAs(Exception expectedUserValidationException)
 	{
 		return actualException => actualException.SameExceptionAs(expectedUserValidationException);
 	}
