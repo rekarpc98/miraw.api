@@ -54,4 +54,16 @@ public partial class ZoneServiceTests
 
 		return new Polygon(coordinates);
 	}
+
+	private static IQueryable<Zone> CreateRandomZones(int count = 10)
+	{
+		var zones = new List<Zone>();
+
+		for (var i = 0; i < count; i++)
+		{
+			zones.Add(CreateRandomZone());
+		}
+
+		return zones.AsQueryable();
+	}
 }
