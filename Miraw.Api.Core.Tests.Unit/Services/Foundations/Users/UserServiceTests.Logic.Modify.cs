@@ -26,26 +26,26 @@ public partial class UserServiceTests
 
 		var userId = inputUser.Id;
 
-		_storageBrokerMock.Setup(x => x.SelectUserByIdAsync(userId)).ReturnsAsync(beforeUpdateStorageUser);
+		storageBrokerMock.Setup(x => x.SelectUserByIdAsync(userId)).ReturnsAsync(beforeUpdateStorageUser);
 
-		_storageBrokerMock.Setup(x => x.UpdateUserAsync(inputUser)).ReturnsAsync(afterUpdateStorageUser);
+		storageBrokerMock.Setup(x => x.UpdateUserAsync(inputUser)).ReturnsAsync(afterUpdateStorageUser);
 
-		_dateTimeBrokerMock.Setup(x => x.GetCurrentDateTime()).Returns(randomDateTime);
+		dateTimeBrokerMock.Setup(x => x.GetCurrentDateTime()).Returns(randomDateTime);
 
 		// when
-		var actualUser = await _userService.ModifyUserAsync(inputUser);
+		var actualUser = await userService.ModifyUserAsync(inputUser);
 
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
 
-		_storageBrokerMock.Verify(x => x.SelectUserByIdAsync(userId), Times.Once);
+		storageBrokerMock.Verify(x => x.SelectUserByIdAsync(userId), Times.Once);
 
-		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Once);
+		dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Once);
 		
-		_storageBrokerMock.Verify(x => x.UpdateUserAsync(inputUser), Times.Once);
+		storageBrokerMock.Verify(x => x.UpdateUserAsync(inputUser), Times.Once);
 		
-		_dateTimeBrokerMock.VerifyNoOtherCalls();
-		_storageBrokerMock.VerifyNoOtherCalls();
-		_loggingBrokerMock.VerifyNoOtherCalls();
+		dateTimeBrokerMock.VerifyNoOtherCalls();
+		storageBrokerMock.VerifyNoOtherCalls();
+		loggingBrokerMock.VerifyNoOtherCalls();
 	}
 }

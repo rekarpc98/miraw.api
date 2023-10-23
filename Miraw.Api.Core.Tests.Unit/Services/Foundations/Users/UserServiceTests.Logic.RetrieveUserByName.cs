@@ -19,20 +19,20 @@ public partial class UserServiceTests
 		IQueryable<User> storageUsers = randomUsers.Where(x => x.Id == firstUser.Id).DeepClone();
 		var userName = firstUser.Name;
 
-		_storageBrokerMock.Setup(broker => broker.SelectUsersByName(userName)).Returns(storageUsers);
+		storageBrokerMock.Setup(broker => broker.SelectUsersByName(userName)).Returns(storageUsers);
 		
 		// when
-		IQueryable<User> actualUser = _userService.RetrieveUsersByName(userName);
+		IQueryable<User> actualUser = userService.RetrieveUsersByName(userName);
 		
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUsers);
 		
-		_storageBrokerMock.Verify(x => x.SelectUsersByName(userName), Times.Once);
-		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
+		storageBrokerMock.Verify(x => x.SelectUsersByName(userName), Times.Once);
+		dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
 		
-		_dateTimeBrokerMock.VerifyNoOtherCalls();
-		_storageBrokerMock.VerifyNoOtherCalls();
-		_loggingBrokerMock.VerifyNoOtherCalls();
+		dateTimeBrokerMock.VerifyNoOtherCalls();
+		storageBrokerMock.VerifyNoOtherCalls();
+		loggingBrokerMock.VerifyNoOtherCalls();
 	}
 	
 	[Fact]
@@ -43,7 +43,7 @@ public partial class UserServiceTests
 		var randomUsers = CreateRandomUsers(randomDateTime);
 		var storageUser = randomUsers.DeepClone();
 		
-		_storageBrokerMock.Setup(broker => broker.SelectUsersByName("")).Returns(storageUser);
+		storageBrokerMock.Setup(broker => broker.SelectUsersByName("")).Returns(storageUser);
 		
 		// when
 		// ---
@@ -52,16 +52,16 @@ public partial class UserServiceTests
 		
 		await Assert.ThrowsAsync<UserServiceException>( async () =>
 		{
-			_userService.RetrieveUsersByName("");
+			userService.RetrieveUsersByName("");
 			Task.CompletedTask.Wait();
 		});
 		
-		_storageBrokerMock.Verify(x => x.SelectUsersByName(""), Times.Never);
-		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
-		_loggingBrokerMock.Verify(x => x.LogError(It.IsAny<UserServiceException>()),Times.Once);
+		storageBrokerMock.Verify(x => x.SelectUsersByName(""), Times.Never);
+		dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
+		loggingBrokerMock.Verify(x => x.LogError(It.IsAny<UserServiceException>()),Times.Once);
 		
-		_dateTimeBrokerMock.VerifyNoOtherCalls();
-		_storageBrokerMock.VerifyNoOtherCalls();
-		_loggingBrokerMock.VerifyNoOtherCalls();
+		dateTimeBrokerMock.VerifyNoOtherCalls();
+		storageBrokerMock.VerifyNoOtherCalls();
+		loggingBrokerMock.VerifyNoOtherCalls();
 	}
 }

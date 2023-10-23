@@ -19,20 +19,20 @@ public partial class UserServiceTests
 		User storageUser = inputUser.DeepClone();
 		User expectedUser = storageUser.DeepClone();
 
-		_dateTimeBrokerMock.Setup(broker => broker.GetCurrentDateTime()).Returns(dateTime);
+		dateTimeBrokerMock.Setup(broker => broker.GetCurrentDateTime()).Returns(dateTime);
 		
-		_storageBrokerMock.Setup(broker => broker.InsertUserAsync(inputUser)).ReturnsAsync(storageUser);
+		storageBrokerMock.Setup(broker => broker.InsertUserAsync(inputUser)).ReturnsAsync(storageUser);
 		
 		// when
-		User actualUser = await _userService.RegisterUserAsync(inputUser);
+		User actualUser = await userService.RegisterUserAsync(inputUser);
 		
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
 		
-		_storageBrokerMock.Verify(x => x.InsertUserAsync(inputUser), Times.Once);
+		storageBrokerMock.Verify(x => x.InsertUserAsync(inputUser), Times.Once);
 		
-		_dateTimeBrokerMock.VerifyNoOtherCalls();
-		_storageBrokerMock.VerifyNoOtherCalls();
-		_loggingBrokerMock.VerifyNoOtherCalls();
+		dateTimeBrokerMock.VerifyNoOtherCalls();
+		storageBrokerMock.VerifyNoOtherCalls();
+		loggingBrokerMock.VerifyNoOtherCalls();
 	}
 }

@@ -25,14 +25,14 @@ public partial class UserServiceTests
 		var expectedUserValidationException = new UserValidationException(invalidUserException);
 
 		// when
-		ValueTask<User> registerUserTask = _userService.RegisterUserAsync(invalidUser);
+		ValueTask<User> registerUserTask = userService.RegisterUserAsync(invalidUser);
 
 		// then
 		await Assert.ThrowsAsync<UserValidationException>(() => registerUserTask.AsTask());
 
-		_loggingBrokerMock.Verify(x =>
+		loggingBrokerMock.Verify(x =>
 			x.LogError(It.Is(SameExceptionAs(expectedUserValidationException))), Times.Once);
 
-		_storageBrokerMock.Verify(x => x.InsertUserAsync(It.IsAny<User>()), Times.Never);
+		storageBrokerMock.Verify(x => x.InsertUserAsync(It.IsAny<User>()), Times.Never);
 	}
 }

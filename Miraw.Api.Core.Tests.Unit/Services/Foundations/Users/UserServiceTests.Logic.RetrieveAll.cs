@@ -17,19 +17,19 @@ public partial class UserServiceTests
 		IQueryable<User> storageUsers = randomUsers.DeepClone();
 		IQueryable<User> expectedUsers = storageUsers.DeepClone();
 
-		_storageBrokerMock.Setup(broker => broker.SelectAllUsers()).Returns(storageUsers);
+		storageBrokerMock.Setup(broker => broker.SelectAllUsers()).Returns(storageUsers);
 		
 		// when
-		IQueryable<User> actualUsers = _userService.RetrieveAllUsers();
+		IQueryable<User> actualUsers = userService.RetrieveAllUsers();
 		
 		// then
 		actualUsers.Should().BeEquivalentTo(expectedUsers);
 		
-		_storageBrokerMock.Verify(x => x.SelectAllUsers(), Times.Once);
-		_dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
+		storageBrokerMock.Verify(x => x.SelectAllUsers(), Times.Once);
+		dateTimeBrokerMock.Verify(x => x.GetCurrentDateTime(), Times.Never);
 		
-		_dateTimeBrokerMock.VerifyNoOtherCalls();
-		_storageBrokerMock.VerifyNoOtherCalls();
-		_loggingBrokerMock.VerifyNoOtherCalls();
+		dateTimeBrokerMock.VerifyNoOtherCalls();
+		storageBrokerMock.VerifyNoOtherCalls();
+		loggingBrokerMock.VerifyNoOtherCalls();
 	}
 }
