@@ -1,8 +1,7 @@
-using System.Drawing;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
-using Miraw.Api.Core.Models.Regions.Exceptions;
-using Region = Miraw.Api.Core.Models.Regions.Region;
+using Miraw.Api.Core.Models.Regions;
+using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Services.Foundations.Regions;
 
@@ -37,7 +36,7 @@ public partial class RegionService : IRegionService
 			return storageRegion!;
 		});
 
-	public async ValueTask<Region> GetRegionAsync(PointF coordinates)
+	public async ValueTask<Region> GetRegionAsync(Point coordinates)
 	{
 		throw new NotImplementedException();
 	}
@@ -47,7 +46,7 @@ public partial class RegionService : IRegionService
 		throw new NotImplementedException();
 	}
 
-	public async ValueTask<Region> EditRegionAsync(Region region)
+	public async ValueTask<Region> ModifyRegionAsync(Region region)
 	{
 		throw new NotImplementedException();
 	}
