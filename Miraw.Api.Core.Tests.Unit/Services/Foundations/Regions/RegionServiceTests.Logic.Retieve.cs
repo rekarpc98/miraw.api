@@ -23,7 +23,7 @@ public partial class RegionServiceTests
 
 		// when
 
-		var actualRegion = await _regionService.GetRegionAsync(reginId);
+		var actualRegion = await _regionService.RetrieveRegionAsync(reginId);
 
 		// then
 

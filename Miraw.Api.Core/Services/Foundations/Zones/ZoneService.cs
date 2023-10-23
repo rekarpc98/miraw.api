@@ -19,12 +19,12 @@ public class ZoneService : IZoneService
 		throw new NotImplementedException();
 	}
 
-	public async ValueTask<Zone> GetZoneAsync(Guid zoneId)
+	public async ValueTask<Zone> RetrieveZoneAsync(Guid zoneId)
 	{
 		throw new NotImplementedException();
 	}
 
-	public async ValueTask<Zone> GetZoneAsync(Point coordinates)
+	public async ValueTask<Zone> RetrieveZoneAsync(Point coordinates)
 	{
 		throw new NotImplementedException();
 	}

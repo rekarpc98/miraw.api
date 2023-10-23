@@ -21,7 +21,7 @@ public partial class RegionServiceTests
 
 		// when
 		ValueTask<Region> retrieveRegionTask =
-			_regionService.GetRegionAsync(inputRegionId);
+			_regionService.RetrieveRegionAsync(inputRegionId);
 
 		// then
 		Assert.ThrowsAsync<RegionValidationException>(() =>
@@ -49,7 +49,7 @@ public partial class RegionServiceTests
 
 		// when
 		ValueTask<Region> retrieveRegionTask =
-			_regionService.GetRegionAsync(inputRegionId);
+			_regionService.RetrieveRegionAsync(inputRegionId);
 
 		// then
 		Assert.ThrowsAsync<RegionValidationException>(() =>

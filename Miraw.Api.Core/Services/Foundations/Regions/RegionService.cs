@@ -24,7 +24,7 @@ public partial class RegionService : IRegionService
 			return await _storageBroker.InsertRegionAsync(region);
 		});
 
-	public ValueTask<Region> GetRegionAsync(Guid regionId) =>
+	public ValueTask<Region> RetrieveRegionAsync(Guid regionId) =>
 		TryCatch(async () =>
 		{
 			ValidateRegionId(regionId);
@@ -36,7 +36,7 @@ public partial class RegionService : IRegionService
 			return storageRegion!;
 		});
 
-	public async ValueTask<Region> GetRegionAsync(Point coordinates)
+	public async ValueTask<Region> RetrieveRegionAsync(Point coordinates)
 	{
 		throw new NotImplementedException();
 	}
