@@ -27,7 +27,7 @@ public partial class ZoneServiceTests
 		
 		// then
 		actualZone.Should().BeEquivalentTo(expectedZone);
-		storageBrokerMock.Verify(x => x.InsertZoneAsync(inputZone), Times.Once);
+		storageBrokerMock.Verify(x => x.SelectZoneByIdAsync(inputZoneId), Times.Once);
 		storageBrokerMock.VerifyNoOtherCalls();
 	}
 }

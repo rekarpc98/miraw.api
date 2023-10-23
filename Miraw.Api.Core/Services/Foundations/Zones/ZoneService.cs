@@ -17,7 +17,7 @@ public class ZoneService : IZoneService
 
 	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId)
 	{
-		throw new NotImplementedException();
+		return await storageBroker.SelectZoneByIdAsync(zoneId);
 	}
 
 	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate)
