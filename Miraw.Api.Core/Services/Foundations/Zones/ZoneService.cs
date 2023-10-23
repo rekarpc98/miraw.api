@@ -1,11 +1,13 @@
-﻿using Miraw.Api.Core.Brokers.Loggings;
+﻿using System.Diagnostics.Eventing.Reader;
+using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Zones;
+using Miraw.Api.Core.Models.Zones.Exceptions;
 using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Services.Foundations.Zones;
 
-public class ZoneService : IZoneService
+public partial class ZoneService : IZoneService
 {
 	private readonly IStorageBroker storageBroker;
 	private readonly ILoggingBroker loggingBroker;
@@ -16,7 +18,19 @@ public class ZoneService : IZoneService
 		this.loggingBroker = loggingBroker;
 	}
 
-	public async ValueTask<Zone> CreateZoneAsync(Zone zone) => await storageBroker.InsertZoneAsync(zone);
+	public async ValueTask<Zone> CreateZoneAsync(Zone zone)
+	{
+		try
+		{
+			ValidateZoneOnCreate(zone);
+			
+			return await storageBroker.InsertZoneAsync(zone);
+		}
+		catch (NullZoneException nullZoneException)
+		{
+			throw CreateZoneValidationExceptionAndLogError(nullZoneException);
+		}
+	}
 
 	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId) => await storageBroker.SelectZoneByIdAsync(zoneId);
 
