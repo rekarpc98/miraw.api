@@ -24,7 +24,7 @@ public class ZoneService : IZoneService
 
 	public async ValueTask<Zone> ModifyZoneAsync(Zone zone)
 	{
-		throw new NotImplementedException();
+		return await storageBroker.UpdateZoneAsync(zone);
 	}
 
 	public async ValueTask<Zone> RemoveZoneAsync(Zone zone)
