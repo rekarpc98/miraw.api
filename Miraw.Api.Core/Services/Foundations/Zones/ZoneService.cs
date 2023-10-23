@@ -12,18 +12,13 @@ public class ZoneService : IZoneService
 	{
 		this.storageBroker = storageBroker;
 	}
-	
+
 	public async ValueTask<Zone> CreateZoneAsync(Zone zone) => await storageBroker.InsertZoneAsync(zone);
 
-	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId)
-	{
-		return await storageBroker.SelectZoneByIdAsync(zoneId);
-	}
+	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId) => await storageBroker.SelectZoneByIdAsync(zoneId);
 
-	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate)
-	{
-		throw new NotImplementedException();
-	}
+	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate) =>
+		await storageBroker.SelectZoneByCoordinateAsync(coordinate);
 
 	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync()
 	{
