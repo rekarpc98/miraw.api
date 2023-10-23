@@ -19,11 +19,11 @@ public partial class ZoneServiceTests
 	}
 
 	//private static Zone CreateRandomZone() => CreateZoneFiller().Create();
-	private static Zone CreateRandomZone(Guid? id = null) => new()
+	private static Zone CreateRandomZone(Guid? id = null, Geometry? boundary = null) => new()
 	{
 		Id = id ?? Guid.NewGuid(),
 		RegionId = Guid.NewGuid(),
-		Boundary = CreateGeometryObject()
+		Boundary = boundary ?? CreateGeometryObject()
 	};
 
 	private static Filler<Zone> CreateZoneFiller()

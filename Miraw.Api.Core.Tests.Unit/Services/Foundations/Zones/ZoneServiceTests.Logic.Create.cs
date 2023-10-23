@@ -8,7 +8,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 public partial class ZoneServiceTests
 {
 	[Fact]
-	public async Task ShouldCreateZone()
+	public async Task ShouldCreateZoneAsync()
 	{
 		// given
 		Zone randomZone = CreateRandomZone();
