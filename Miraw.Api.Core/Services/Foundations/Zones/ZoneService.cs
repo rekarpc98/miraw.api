@@ -20,10 +20,7 @@ public class ZoneService : IZoneService
 	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate) =>
 		await storageBroker.SelectZoneByCoordinateAsync(coordinate);
 
-	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync()
-	{
-		throw new NotImplementedException();
-	}
+	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync() => storageBroker.SelectAllZones();
 
 	public async ValueTask<Zone> ModifyZoneAsync(Zone zone)
 	{
