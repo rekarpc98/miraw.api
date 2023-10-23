@@ -13,11 +13,7 @@ public class ZoneService : IZoneService
 		this.storageBroker = storageBroker;
 	}
 	
-	public async ValueTask<Zone> CreateZoneAsync(Zone zone)
-	{
-		await storageBroker.InsertZoneAsync(zone);
-		throw new NotImplementedException();
-	}
+	public async ValueTask<Zone> CreateZoneAsync(Zone zone) => await storageBroker.InsertZoneAsync(zone);
 
 	public async ValueTask<Zone> RetrieveZoneAsync(Guid zoneId)
 	{
