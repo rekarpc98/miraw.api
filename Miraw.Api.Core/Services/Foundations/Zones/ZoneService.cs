@@ -22,13 +22,8 @@ public class ZoneService : IZoneService
 
 	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync() => storageBroker.SelectAllZones();
 
-	public async ValueTask<Zone> ModifyZoneAsync(Zone zone)
-	{
-		return await storageBroker.UpdateZoneAsync(zone);
-	}
+	public async ValueTask<Zone> ModifyZoneAsync(Zone zone) => await storageBroker.UpdateZoneAsync(zone);
 
-	public async ValueTask<Zone> RemoveZoneAsync(Zone zone)
-	{
-		return await storageBroker.DeleteZoneAsync(zone);
-	}
+	public async ValueTask<Zone> RemoveZoneAsync(Zone zone) => 
+		await storageBroker.DeleteZoneAsync(zone);
 }
