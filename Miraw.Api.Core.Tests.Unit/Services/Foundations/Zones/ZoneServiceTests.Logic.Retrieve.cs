@@ -14,7 +14,6 @@ public partial class ZoneServiceTests
 		var randomId = Guid.NewGuid();
 		Guid inputZoneId = randomId;
 		Zone randomZone = CreateRandomZone(inputZoneId);
-		Zone inputZone = randomZone;
 		Zone storageZone = randomZone.DeepClone();
 		Zone expectedZone = storageZone.DeepClone();
 
