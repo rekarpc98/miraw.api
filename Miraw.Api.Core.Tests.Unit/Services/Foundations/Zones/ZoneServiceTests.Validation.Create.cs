@@ -1,7 +1,6 @@
 ﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
-using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 
@@ -39,7 +38,6 @@ public partial class ZoneServiceTests
 		// given
 		Zone randomZone = CreateInvalidZone();
 		Zone invalidZone = randomZone;
-
 		var invalidZoneException = new InvalidZoneException();
 
 		invalidZoneException.AddData(
@@ -69,6 +67,40 @@ public partial class ZoneServiceTests
 		invalidZoneException.AddData(
 			key: nameof(Zone.UpdatedDate),
 			values: "Invalid date time offset");
+
+		var zoneValidationException = new ZoneValidationException(invalidZoneException);
+
+		// when
+		ValueTask<Zone> createZoneTask = zoneService.CreateZoneAsync(invalidZone);
+
+		// then
+		Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
+
+		loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(zoneValidationException))),
+			Times.Once);
+
+		storageBrokerMock.Verify(broker =>
+				broker.InsertZoneAsync(It.IsAny<Zone>()),
+			Times.Never);
+
+		storageBrokerMock.VerifyNoOtherCalls();
+	}
+
+	[Fact]
+	public void ShouldThrowZoneValidationExceptionOnCreateWhenUpdatedDateAndCreatedDateAreNotSameAndLogIt()
+	{
+		// given
+		
+		DateTimeOffset randomDateTime = GetRandomDateTime();
+		
+		Zone randomZone = CreateRandomZone(createdDate: randomDateTime, updatedDate: randomDateTime);
+		Zone invalidZone = randomZone;
+		var invalidZoneException = new InvalidZoneException();
+
+		invalidZoneException.AddData(
+			key: nameof(Zone.UpdatedDate),
+			values: $"Date is not the same as {nameof(Zone.CreatedDate)}");
 
 		var zoneValidationException = new ZoneValidationException(invalidZoneException);
 
