@@ -1,6 +1,7 @@
 ﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
+using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 
@@ -45,6 +46,39 @@ public partial class ZoneServiceTests
 		invalidZoneException.AddData(
 			key: nameof(Zone.Id),
 			values: "Invalid zone id");
+
+		var zoneValidationException = new ZoneValidationException(invalidZoneException);
+
+		// when
+		ValueTask<Zone> createZoneTask = zoneService.CreateZoneAsync(invalidZone);
+
+		// then
+		Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
+
+		loggingBrokerMock.Verify(broker =>
+				broker.LogError(It.Is(SameExceptionAs(zoneValidationException))),
+			Times.Once);
+
+		storageBrokerMock.Verify(broker =>
+				broker.InsertZoneAsync(It.IsAny<Zone>()),
+			Times.Never);
+
+		storageBrokerMock.VerifyNoOtherCalls();
+	}
+
+	[Fact]
+	public void ShouldThrowZoneValidationExceptionOnCreateWhenGeometryIsInvalidAndLogIt()
+	{
+		// given
+		Geometry invalidGeometry = new Polygon(new LinearRing(new Coordinate[] { }));
+		Zone randomZone = CreateRandomZone(boundary: invalidGeometry);
+		Zone invalidZone = randomZone;
+
+		var invalidZoneException = new InvalidZoneException();
+
+		invalidZoneException.AddData(
+			key: nameof(Zone.Boundary),
+			values: "Invalid zone boundary");
 
 		var zoneValidationException = new ZoneValidationException(invalidZoneException);
 
