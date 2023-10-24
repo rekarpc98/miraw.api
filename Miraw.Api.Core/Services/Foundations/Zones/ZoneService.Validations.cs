@@ -12,12 +12,24 @@ public partial class ZoneService
 
 		Validate(
 			(IsInvalid(zone.Id), nameof(zone.Id)),
-			(IsInvalid(zone.Boundary), nameof(zone.Boundary))
+			(IsInvalid(zone.RegionId), nameof(zone.RegionId)),
+			(IsInvalid(zone.Boundary), nameof(zone.Boundary)),
+			(IsInvalid(zone.CreatedDate), nameof(zone.CreatedDate)),
+			(IsInvalid(zone.UpdatedDate), nameof(zone.UpdatedDate)),
+			(IsInvalid(zone.CreatedBy), nameof(zone.CreatedBy)),
+			(IsInvalid(zone.UpdatedBy), nameof(zone.UpdatedBy))
 		);
 	}
 
-	private static dynamic IsInvalid(Guid? zoneId) =>
-		new { Condition = zoneId == Guid.Empty || zoneId == null, Message = "Invalid zone id" };
+	private static dynamic IsInvalid(DateTimeOffset dateTimeOffset) =>
+		new
+		{
+			Condition = dateTimeOffset == default || dateTimeOffset == DateTimeOffset.MinValue,
+			Message = "Invalid date time offset"
+		};
+
+	private static dynamic IsInvalid(Guid? id) =>
+		new { Condition = id == Guid.Empty || id == null, Message = "Invalid guid id" };
 
 	private static dynamic IsInvalid(Geometry? geometry) =>
 		new { Condition = geometry is null || geometry.IsEmpty, Message = "Invalid zone boundary" };

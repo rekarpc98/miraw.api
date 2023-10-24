@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 
 public partial class StorageBroker
 {
-	DbSet<User> Users { get; set; }
+	private DbSet<User> Users { get; set; }
 
 	public async ValueTask<User> InsertUserAsync(User user) => await InsertAsync(user);
 

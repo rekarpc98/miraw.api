@@ -6,7 +6,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 //public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
 public partial class StorageBroker : DbContext, IStorageBroker
 {
-	readonly IConfiguration _configuration;
+	private readonly IConfiguration _configuration;
 	
 	public StorageBroker(IConfiguration configuration)
 	{
@@ -14,7 +14,7 @@ public partial class StorageBroker : DbContext, IStorageBroker
 		Database.Migrate();
 	}
 
-	async ValueTask<T> InsertAsync<T>(T @object)
+	private async ValueTask<T> InsertAsync<T>(T @object)
 	{
 		if (@object == null)
 		{
@@ -27,11 +27,11 @@ public partial class StorageBroker : DbContext, IStorageBroker
 		return @object;
 	}
 
-	IQueryable<T> SelectAll<T>() where T : class => Set<T>();
+	private IQueryable<T> SelectAll<T>() where T : class => Set<T>();
 
-	async ValueTask<T?> SelectAsync<T>(params object[] @objectIds) where T : class => await FindAsync<T>(objectIds);
+	private async ValueTask<T?> SelectAsync<T>(params object[] @objectIds) where T : class => await FindAsync<T>(objectIds);
 
-	async ValueTask<T> UpdateAsync<T>(T @object)
+	private async ValueTask<T> UpdateAsync<T>(T @object)
 	{
 		if (@object == null)
 		{
@@ -44,7 +44,7 @@ public partial class StorageBroker : DbContext, IStorageBroker
 		return @object;
 	}
 
-	async ValueTask<T> DeleteAsync<T>(T @object)
+	private async ValueTask<T> DeleteAsync<T>(T @object)
 	{
 		if (@object == null)
 		{

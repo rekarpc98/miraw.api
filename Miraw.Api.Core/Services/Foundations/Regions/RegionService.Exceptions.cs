@@ -5,9 +5,9 @@ namespace Miraw.Api.Core.Services.Foundations.Regions;
 
 public partial class RegionService
 {
-	delegate ValueTask<Region> ReturningRegionFunction();
+	private delegate ValueTask<Region> ReturningRegionFunction();
 
-	async ValueTask<Region> TryCatch(ReturningRegionFunction returningRegionFunction)
+	private async ValueTask<Region> TryCatch(ReturningRegionFunction returningRegionFunction)
 	{
 		try
 		{
@@ -27,7 +27,7 @@ public partial class RegionService
 		}
 	}
 
-	RegionValidationException CreateAndLogValidationException(Exception exception)
+	private RegionValidationException CreateAndLogValidationException(Exception exception)
 	{
 		var regionValidationException = new RegionValidationException(exception);
 		

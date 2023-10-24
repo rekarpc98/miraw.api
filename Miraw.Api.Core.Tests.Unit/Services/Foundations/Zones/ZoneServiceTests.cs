@@ -23,9 +23,32 @@ public partial class ZoneServiceTests
 	}
 
 	//private static Zone CreateRandomZone() => CreateZoneFiller().Create();
-	
+
 	private static Zone CreateRandomZone(Guid? id = null, Geometry? boundary = null) =>
-		new() { Id = id ?? Guid.NewGuid(), RegionId = Guid.NewGuid(), Boundary = boundary ?? CreateGeometryObject() };
+		new()
+		{
+			Id = id ?? Guid.NewGuid(),
+			RegionId = Guid.NewGuid(),
+			Boundary = boundary ?? CreateGeometryObject(),
+			CreatedDate = DateTimeOffset.UtcNow,
+			UpdatedDate = DateTimeOffset.UtcNow,
+			CreatedBy = Guid.NewGuid(),
+			UpdatedBy = Guid.NewGuid()
+		};
+
+	private static Zone CreateInvalidZone(Guid? id = null)
+	{
+		return new Zone
+		{
+			Id = id ?? Guid.Empty,
+			RegionId = Guid.Empty,
+			Boundary = new Polygon(new LinearRing(new Coordinate[] { })),
+			CreatedDate = default,
+			UpdatedDate = default,
+			CreatedBy = Guid.Empty,
+			UpdatedBy = Guid.Empty
+		};
+	}
 
 	private static Filler<Zone> CreateZoneFiller()
 	{
@@ -64,7 +87,7 @@ public partial class ZoneServiceTests
 
 		return zones.AsQueryable();
 	}
-	
+
 	private static Expression<Func<Xeption, bool>> SameExceptionAs(Exception expectedUserValidationException)
 	{
 		return actualException => actualException.SameExceptionAs(expectedUserValidationException);

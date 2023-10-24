@@ -8,10 +8,11 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 
 public partial class UserService
 {
-	delegate ValueTask<User> ReturningUserFunction();
-	delegate IQueryable<User> ReturningUsersFunction();
+	private delegate ValueTask<User> ReturningUserFunction();
 
-	async ValueTask<User> TryCatch(ReturningUserFunction function)
+	private delegate IQueryable<User> ReturningUsersFunction();
+
+	private async ValueTask<User> TryCatch(ReturningUserFunction function)
 	{
 		try
 		{
@@ -60,8 +61,8 @@ public partial class UserService
 			throw CreateAndLogServiceException(failedUserServiceException);
 		}
 	}
-	
-	IQueryable<User> TryCatch(ReturningUsersFunction function)
+
+	private IQueryable<User> TryCatch(ReturningUsersFunction function)
 	{
 		try
 		{
@@ -81,7 +82,7 @@ public partial class UserService
 		}
 	}
 
-	Exception CreateAndLogDependencyValidationException(AlreadyExistsUserException alreadyExistsStudentException)
+	private Exception CreateAndLogDependencyValidationException(AlreadyExistsUserException alreadyExistsStudentException)
 	{
 		var validationException = new UserValidationException(alreadyExistsStudentException);
 		_loggingBroker.LogError(validationException);
@@ -89,7 +90,7 @@ public partial class UserService
 		return validationException;
 	}
 
-	Exception CreateAndLogDependencyException(Exception exception)
+	private Exception CreateAndLogDependencyException(Exception exception)
 	{
 		var userDependencyException = new UserDependencyException(exception);
 		_loggingBroker.LogError(userDependencyException);
@@ -97,7 +98,7 @@ public partial class UserService
 		return userDependencyException;
 	}
 
-	Exception CreateAndLogCriticalDependencyException(Exception exception)
+	private Exception CreateAndLogCriticalDependencyException(Exception exception)
 	{
 		var validationException = new UserValidationException(exception);
 		_loggingBroker.LogCritical(validationException);
@@ -105,15 +106,15 @@ public partial class UserService
 		return validationException;
 	}
 
-	Exception CreateAndLogValidationException(Exception exception)
+	private Exception CreateAndLogValidationException(Exception exception)
 	{
 		var userDependencyValidationException = new UserValidationException(exception);
 		_loggingBroker.LogError(userDependencyValidationException);
 		
 		return userDependencyValidationException;
 	}
-	
-	Exception CreateAndLogServiceException(Exception exception)
+
+	private Exception CreateAndLogServiceException(Exception exception)
 	{
 		var userServiceException = new UserServiceException(exception);
 		_loggingBroker.LogError(userServiceException);

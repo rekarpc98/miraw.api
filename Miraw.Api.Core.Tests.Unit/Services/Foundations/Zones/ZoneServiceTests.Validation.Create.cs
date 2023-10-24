@@ -34,51 +34,41 @@ public partial class ZoneServiceTests
 	}
 
 	[Fact]
-	public void ShouldThrowZoneValidationExceptionOnCreateWhenIdIsInvalidAndLogIt()
+	public void ShouldThrowZoneValidationExceptionOnCreateWhenZoneIsInvalidAndLogIt()
 	{
 		// given
-		Guid invalidId = Guid.Empty;
-		Zone randomZone = CreateRandomZone(invalidId);
+		Zone randomZone = CreateInvalidZone();
 		Zone invalidZone = randomZone;
 
 		var invalidZoneException = new InvalidZoneException();
 
 		invalidZoneException.AddData(
 			key: nameof(Zone.Id),
-			values: "Invalid zone id");
+			values: "Invalid guid id");
 
-		var zoneValidationException = new ZoneValidationException(invalidZoneException);
-
-		// when
-		ValueTask<Zone> createZoneTask = zoneService.CreateZoneAsync(invalidZone);
-
-		// then
-		Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
-
-		loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(zoneValidationException))),
-			Times.Once);
-
-		storageBrokerMock.Verify(broker =>
-				broker.InsertZoneAsync(It.IsAny<Zone>()),
-			Times.Never);
-
-		storageBrokerMock.VerifyNoOtherCalls();
-	}
-
-	[Fact]
-	public void ShouldThrowZoneValidationExceptionOnCreateWhenGeometryIsInvalidAndLogIt()
-	{
-		// given
-		Geometry invalidGeometry = new Polygon(new LinearRing(new Coordinate[] { }));
-		Zone randomZone = CreateRandomZone(boundary: invalidGeometry);
-		Zone invalidZone = randomZone;
-
-		var invalidZoneException = new InvalidZoneException();
-
+		invalidZoneException.AddData(
+			key: nameof(Zone.RegionId),
+			values: "Invalid guid id");
+		
+		invalidZoneException.AddData(
+			key: nameof(Zone.CreatedBy),
+			values: "Invalid guid id");
+		
+		invalidZoneException.AddData(
+			key: nameof(Zone.UpdatedBy),
+			values: "Invalid guid id");
+		
 		invalidZoneException.AddData(
 			key: nameof(Zone.Boundary),
 			values: "Invalid zone boundary");
+		
+		invalidZoneException.AddData(
+			key: nameof(Zone.CreatedDate),
+			values: "Invalid date time offset");
+		
+		invalidZoneException.AddData(
+			key: nameof(Zone.UpdatedDate),
+			values: "Invalid date time offset");
 
 		var zoneValidationException = new ZoneValidationException(invalidZoneException);
 

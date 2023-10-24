@@ -9,7 +9,7 @@ namespace Miraw.Api.Core.Brokers.Loggings;
 
 public class LoggingBroker : ILoggingBroker
 {
-	readonly ILogger<LoggingBroker> _logger;
+	private readonly ILogger<LoggingBroker> _logger;
 
 	public LoggingBroker(ILogger<LoggingBroker> logger) => _logger = logger;
 

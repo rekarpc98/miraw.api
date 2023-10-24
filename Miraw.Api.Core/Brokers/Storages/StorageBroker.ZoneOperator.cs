@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 
 public partial class StorageBroker
 {
-	DbSet<ZoneOperator> ZoneOperators { get; set; }
+	private DbSet<ZoneOperator> ZoneOperators { get; set; }
 
 	public async ValueTask<ZoneOperator> InsertZoneOperatorAsync(ZoneOperator zoneOperator) =>
 		await InsertAsync(zoneOperator);

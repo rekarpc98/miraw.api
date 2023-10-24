@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 
 public partial class StorageBroker
 {
-	DbSet<Region> Regions { get; set; }
+	private DbSet<Region> Regions { get; set; }
 
 	public async ValueTask<Region> InsertRegionAsync(Region region) => await InsertAsync(region);
 

@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Services.Foundations.ZoneOperators;
 
 public class ZoneOperatorService : IZoneOperatorService
 {
-	readonly IStorageBroker storageBroker;
+	private readonly IStorageBroker storageBroker;
 
 	public ZoneOperatorService(IStorageBroker storageBroker)
 	{

@@ -5,7 +5,7 @@ namespace Miraw.Api.Core.Services.Foundations.Operators;
 
 public class OperatorService : IOperatorService
 {
-	readonly IStorageBroker storageBroker;
+	private readonly IStorageBroker storageBroker;
 
 	public OperatorService(IStorageBroker storageBroker)
 	{

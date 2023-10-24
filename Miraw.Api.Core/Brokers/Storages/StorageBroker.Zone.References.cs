@@ -6,7 +6,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 
 public partial class StorageBroker
 {
-	static void SetZoneReferences(ModelBuilder modelBuilder)
+	private static void SetZoneReferences(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<ZoneOperator>().HasKey(x => new { x.ZoneId, x.OperatorId });
 

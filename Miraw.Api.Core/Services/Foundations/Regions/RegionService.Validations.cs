@@ -5,12 +5,12 @@ namespace Miraw.Api.Core.Services.Foundations.Regions;
 
 public partial class RegionService
 {
-	static void ValidateRegionOnCreate(Region? region)
+	private static void ValidateRegionOnCreate(Region? region)
 	{
 		ValidateRegion(region);
 	}
 
-	static void ValidateRegion(Region? region)
+	private static void ValidateRegion(Region? region)
 	{
 		if (region is null)
 		{
@@ -18,7 +18,7 @@ public partial class RegionService
 		}
 	}
 
-	static void ValidateRegionId(Guid regionId)
+	private static void ValidateRegionId(Guid regionId)
 	{
 		if (regionId == Guid.Empty)
 		{
@@ -26,7 +26,7 @@ public partial class RegionService
 		}
 	}
 
-	static void ValidateRegionStorage(Region? storageRegion, Guid regionId)
+	private static void ValidateRegionStorage(Region? storageRegion, Guid regionId)
 	{
 		if (storageRegion is null)
 		{

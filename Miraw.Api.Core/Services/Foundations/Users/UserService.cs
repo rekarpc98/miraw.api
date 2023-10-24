@@ -7,9 +7,9 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 
 public partial class UserService : IUserService
 {
-	readonly IDateTimeBroker _dateTimeBroker;
-	readonly ILoggingBroker _loggingBroker;
-	readonly IStorageBroker _storageBroker;
+	private readonly IDateTimeBroker _dateTimeBroker;
+	private readonly ILoggingBroker _loggingBroker;
+	private readonly IStorageBroker _storageBroker;
 
 	public UserService(IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker, IStorageBroker storageBroker)
 	{

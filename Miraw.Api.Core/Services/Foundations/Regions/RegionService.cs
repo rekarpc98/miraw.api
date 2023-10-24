@@ -7,8 +7,8 @@ namespace Miraw.Api.Core.Services.Foundations.Regions;
 
 public partial class RegionService : IRegionService
 {
-	readonly IStorageBroker _storageBroker;
-	readonly ILoggingBroker _loggingBroker;
+	private readonly IStorageBroker _storageBroker;
+	private readonly ILoggingBroker _loggingBroker;
 
 	public RegionService(IStorageBroker storageBroker, ILoggingBroker loggingBroker)
 	{
