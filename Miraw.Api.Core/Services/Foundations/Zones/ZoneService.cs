@@ -30,6 +30,10 @@ public partial class ZoneService : IZoneService
 		{
 			throw CreateZoneValidationExceptionAndLogError(nullZoneException);
 		}
+		catch (InvalidZoneException invalidZoneException)
+		{
+			throw CreateZoneValidationExceptionAndLogError(invalidZoneException);
+		}
 	}
 
 	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId) => await storageBroker.SelectZoneByIdAsync(zoneId);
