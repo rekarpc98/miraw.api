@@ -1,10 +1,11 @@
-﻿using Miraw.Api.Core.Services.Foundations.Users;
+﻿using Miraw.Api.Core.Models.Users;
+using Miraw.Api.Core.Services.Foundations.Users;
 
 namespace Miraw.Api.Core.Services.Processings.Users;
 
 public interface IUserProcessingService
 {
-	ValueTask<int> RetrieveUsersCountAsync();
+	int RetrieveUsersCount();
 }
 
 public class UserProcessingService : IUserProcessingService
@@ -15,8 +16,10 @@ public class UserProcessingService : IUserProcessingService
 	{
 		this.userService = userService;
 	}
-	public async ValueTask<int> RetrieveUsersCountAsync()
+	public int RetrieveUsersCount()
 	{
-		throw new NotImplementedException();
+		IQueryable<User> users = userService.RetrieveAllUsers();
+		
+		return users.Count();
 	}
 }

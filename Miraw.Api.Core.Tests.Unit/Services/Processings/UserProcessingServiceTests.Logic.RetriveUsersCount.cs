@@ -6,7 +6,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Processings;
 public partial class UserProcessingServiceTests
 {
 	[Fact]
-	public async Task ShouldRetrieveUsersCountAsync()
+	public void ShouldRetrieveUsersCountAsync()
 	{
 		// given
 		IQueryable<User> randomUsers = CreateRandomUsers();
@@ -16,7 +16,7 @@ public partial class UserProcessingServiceTests
 		userServiceMock.Setup(x => x.RetrieveAllUsers()).Returns(storageUsers);
 		
 		// when
-		int actualUsersCount = await userProcessingService.RetrieveUsersCountAsync();
+		int actualUsersCount = userProcessingService.RetrieveUsersCount();
 
 		// then
 		
