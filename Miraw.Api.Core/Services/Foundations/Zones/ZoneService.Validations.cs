@@ -82,4 +82,22 @@ public partial class ZoneService
 			throw new NotFoundZoneException(zoneId);
 		}
 	}
+
+	private static void ValidateCoordinate(Point? coordinate)
+	{
+		if (coordinate is null)
+		{
+			throw new InvalidZoneException("Coordinate", coordinate!);
+		}
+
+		if (coordinate.IsEmpty)
+		{
+			throw new InvalidZoneException("Coordinate", coordinate);
+		}
+
+		if (coordinate is { X: 0, Y: 0 })
+		{
+			throw new InvalidZoneException("Coordinate", coordinate);
+		}
+	}
 }

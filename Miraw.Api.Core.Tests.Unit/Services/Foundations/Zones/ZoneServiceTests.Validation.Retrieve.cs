@@ -67,23 +67,33 @@ public partial class ZoneServiceTests
 			Times.Once);
 	}
 
-	[Fact]
-	public async Task ShouldThrowValidationExceptionOnRetrieveByCoordinateWhenInputCoordinateIsInvalidAndLogItAsync()
+	[Theory]
+	[InlineData(null)]
+	[InlineData(nameof(Point.Empty))]
+	[InlineData("invalidCoordinate")]
+	public async Task ShouldThrowValidationExceptionOnRetrieveByCoordinateWhenInputCoordinateIsInvalidAndLogItAsync(
+		string typeOfCoordinate)
 	{
+		var invalidCoordinate = typeOfCoordinate switch
+		{
+			null => null,
+			nameof(Point.Empty) => Point.Empty,
+			_ => new Point(0, 0)
+		};
+
 		// given
-		var invalidCoordinate = new Point(0, 0);
 		Point inputCoordinate = invalidCoordinate;
-		
+
 		var invalidZoneException = new InvalidZoneException("Coordinate", inputCoordinate);
 		var expectedZoneValidationException = new ZoneValidationException(invalidZoneException);
-		
+
 		// when
 		ValueTask<Zone> retrieveZoneByIdTask = zoneService.RetrieveZoneByCoordinateAsync(inputCoordinate);
 
 		// then
 		await Assert.ThrowsAsync<ZoneValidationException>(() => retrieveZoneByIdTask.AsTask());
 
-		storageBrokerMock.Verify(x => x.SelectZoneByCoordinateAsync(inputCoordinate), Times.Once);
+		storageBrokerMock.Verify(x => x.SelectZoneByCoordinateAsync(inputCoordinate), Times.Never);
 
 		storageBrokerMock.VerifyNoOtherCalls();
 

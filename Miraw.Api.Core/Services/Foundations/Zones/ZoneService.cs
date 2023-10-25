@@ -34,8 +34,12 @@ public partial class ZoneService : IZoneService
 			return maybeZone!;
 		});
 
-	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate) =>
-		await storageBroker.SelectZoneByCoordinateAsync(coordinate);
+	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate) => await TryCatch(async () =>
+	{
+		ValidateCoordinate(coordinate);
+		
+		return await storageBroker.SelectZoneByCoordinateAsync(coordinate);
+	});
 
 	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync() => storageBroker.SelectAllZones();
 
