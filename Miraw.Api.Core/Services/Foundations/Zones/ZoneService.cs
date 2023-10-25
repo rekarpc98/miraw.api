@@ -35,7 +35,22 @@ public partial class ZoneService : IZoneService
 		}
 	}
 
-	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId) => await storageBroker.SelectZoneByIdAsync(zoneId);
+	public async ValueTask<Zone> RetrieveZoneByIdAsync(Guid zoneId)
+	{
+		try
+		{
+			ValidateZoneId(zoneId);
+			return await storageBroker.SelectZoneByIdAsync(zoneId);
+		}
+		catch (NullZoneException nullZoneException)
+		{
+			throw CreateZoneValidationExceptionAndLogError(nullZoneException);
+		}
+		catch (InvalidZoneException invalidZoneException)
+		{
+			throw CreateZoneValidationExceptionAndLogError(invalidZoneException);
+		}
+	}
 
 	public async ValueTask<Zone> RetrieveZoneByCoordinateAsync(Point coordinate) =>
 		await storageBroker.SelectZoneByCoordinateAsync(coordinate);
