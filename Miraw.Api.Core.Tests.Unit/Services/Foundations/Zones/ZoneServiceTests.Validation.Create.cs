@@ -1,7 +1,6 @@
 ﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
-using Xeptions;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 

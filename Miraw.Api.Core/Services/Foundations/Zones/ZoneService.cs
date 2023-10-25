@@ -23,7 +23,6 @@ public partial class ZoneService : IZoneService
 		try
 		{
 			ValidateZoneOnCreate(zone);
-			
 			return await storageBroker.InsertZoneAsync(zone);
 		}
 		catch (NullZoneException nullZoneException)
