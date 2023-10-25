@@ -74,4 +74,12 @@ public partial class ZoneService
 			throw new InvalidZoneException(nameof(Zone.Id), zoneId);
 		}
 	}
+
+	private static void ValidateStorageZone(Zone? maybeZone, Guid zoneId)
+	{
+		if (maybeZone is null)
+		{
+			throw new NotFoundZoneException(zoneId);
+		}
+	}
 }

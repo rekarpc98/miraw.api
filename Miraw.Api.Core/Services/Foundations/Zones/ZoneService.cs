@@ -40,7 +40,10 @@ public partial class ZoneService : IZoneService
 		try
 		{
 			ValidateZoneId(zoneId);
-			return await storageBroker.SelectZoneByIdAsync(zoneId);
+			Zone? maybeZone = await storageBroker.SelectZoneByIdAsync(zoneId);
+			ValidateStorageZone(maybeZone, zoneId);
+			
+			return maybeZone!;
 		}
 		catch (NullZoneException nullZoneException)
 		{
@@ -49,6 +52,10 @@ public partial class ZoneService : IZoneService
 		catch (InvalidZoneException invalidZoneException)
 		{
 			throw CreateZoneValidationExceptionAndLogError(invalidZoneException);
+		}
+		catch (NotFoundZoneException notFoundZoneException)
+		{
+			throw CreateZoneValidationExceptionAndLogError(notFoundZoneException);
 		}
 	}
 

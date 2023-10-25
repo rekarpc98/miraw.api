@@ -42,7 +42,6 @@ public partial class ZoneServiceTests
 	public async Task ShouldThrowValidationExceptionOnRetrieveByIdWhenStorageZoneIsNullAndLogItAsync()
 	{
 		// given
-
 		var randomGuid = Guid.NewGuid();
 		Zone? nullZone = null;
 		Zone? storageZone = nullZone;
@@ -54,11 +53,9 @@ public partial class ZoneServiceTests
 			.ReturnsAsync(storageZone);
 
 		// when
-
 		ValueTask<Zone> retrieveZoneByIdTask = zoneService.RetrieveZoneByIdAsync(randomGuid);
 
 		// then
-
 		await Assert.ThrowsAsync<ZoneValidationException>(() => retrieveZoneByIdTask.AsTask());
 
 		storageBrokerMock.Verify(x => x.SelectZoneByIdAsync(randomGuid), Times.Once);
