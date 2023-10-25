@@ -8,7 +8,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 public partial class ZoneServiceTests
 {
 	[Fact]
-	public async Task ShouldRetrieveAllZonesAsync()
+	public void ShouldRetrieveAllZonesAsync()
 	{
 		// given
 		IQueryable<Zone> randomZones = CreateRandomZones();
@@ -18,7 +18,7 @@ public partial class ZoneServiceTests
 		storageBrokerMock.Setup(x => x.SelectAllZones()).Returns(storageZones);
 
 		// when
-		IQueryable<Zone> actualZones = await zoneService.RetrieveAllZonesAsync();
+		IQueryable<Zone> actualZones = zoneService.RetrieveAllZonesAsync();
 
 		// then
 		actualZones.Should().BeEquivalentTo(expectedZones);

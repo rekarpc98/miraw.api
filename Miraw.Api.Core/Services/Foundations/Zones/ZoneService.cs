@@ -38,10 +38,14 @@ public partial class ZoneService : IZoneService
 	{
 		ValidateCoordinate(coordinate);
 		
-		return await storageBroker.SelectZoneByCoordinateAsync(coordinate);
+		Zone? maybeZone =  await storageBroker.SelectZoneByCoordinateAsync(coordinate);
+		
+		ValidateStorageZone(maybeZone, coordinate);
+
+		return maybeZone!;
 	});
 
-	public async ValueTask<IQueryable<Zone>> RetrieveAllZonesAsync() => storageBroker.SelectAllZones();
+	public IQueryable<Zone> RetrieveAllZonesAsync() => storageBroker.SelectAllZones();
 
 	public async ValueTask<Zone> ModifyZoneAsync(Zone zone) => await storageBroker.UpdateZoneAsync(zone);
 

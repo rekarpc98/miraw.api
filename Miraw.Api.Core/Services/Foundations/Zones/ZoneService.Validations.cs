@@ -83,6 +83,14 @@ public partial class ZoneService
 		}
 	}
 
+	private static void ValidateStorageZone(Zone? maybeZone, Point coordinate)
+	{
+		if (maybeZone is null)
+		{
+			throw new NotFoundZoneException(coordinate);
+		}
+	}
+
 	private static void ValidateCoordinate(Point? coordinate)
 	{
 		if (coordinate is null)
