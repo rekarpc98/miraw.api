@@ -4,10 +4,9 @@ namespace Miraw.Api.Core.Services.Foundations.Zones;
 
 public partial class ZoneService
 {
-	private Exception CreateZoneValidationExceptionAndLogError(Exception nullZoneException)
+	private ZoneValidationException CreateZoneValidationExceptionAndLogError(Exception exception)
 	{
-		var zoneValidationException = new ZoneValidationException(nullZoneException);
-
+		var zoneValidationException = new ZoneValidationException(exception);
 		loggingBroker.LogError(zoneValidationException);
 
 		return zoneValidationException;

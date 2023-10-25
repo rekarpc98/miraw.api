@@ -10,6 +10,8 @@ public partial class ZoneServiceTests
 	[Fact]
 	public async Task ShouldCreateZoneAsync()
 	{
+		DateTimeOffset randomDateTime = GetRandomDateTime();
+		
 		// given
 		Zone randomZone = CreateRandomZone();
 		Zone inputZone = randomZone;

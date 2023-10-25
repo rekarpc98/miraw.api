@@ -25,17 +25,21 @@ public partial class ZoneServiceTests
 	//private static Zone CreateRandomZone() => CreateZoneFiller().Create();
 
 	private static Zone CreateRandomZone(Guid? id = null, Geometry? boundary = null, DateTimeOffset? createdDate = null,
-		DateTimeOffset? updatedDate = null) =>
-		new()
+		DateTimeOffset? updatedDate = null)
+	{
+		DateTimeOffset randomDateTime = GetRandomDateTime();
+
+		return new Zone
 		{
 			Id = id ?? Guid.NewGuid(),
 			RegionId = Guid.NewGuid(),
 			Boundary = boundary ?? CreateGeometryObject(),
-			CreatedDate = createdDate ?? DateTimeOffset.UtcNow,
-			UpdatedDate = updatedDate ?? DateTimeOffset.UtcNow,
+			CreatedDate = createdDate ?? randomDateTime,
+			UpdatedDate = updatedDate ?? randomDateTime,
 			CreatedBy = Guid.NewGuid(),
 			UpdatedBy = Guid.NewGuid()
 		};
+	}
 
 	private static Zone CreateInvalidZone(Guid? id = null)
 	{
@@ -89,13 +93,8 @@ public partial class ZoneServiceTests
 		return zones.AsQueryable();
 	}
 
-	private static Expression<Func<Xeption, bool>> SameExceptionAs(Exception expectedUserValidationException)
-	{
-		return actualException => actualException.SameExceptionAs(expectedUserValidationException);
-	}
+	private static Expression<Func<Xeption, bool>> SameExceptionAs(Exception expectedUserValidationException) =>
+		actualException => actualException.SameExceptionAs(expectedUserValidationException);
 
-	private static DateTimeOffset GetRandomDateTime()
-	{
-		return DateTimeOffset.UtcNow.AddMinutes(Random.Shared.Next(10, 50));
-	}
+	private static DateTimeOffset GetRandomDateTime() => DateTimeOffset.UtcNow.AddMinutes(Random.Shared.Next(10, 50));
 }

@@ -1,13 +1,14 @@
 ﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
+using Xeptions;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 
 public partial class ZoneServiceTests
 {
 	[Fact]
-	public void ShouldThrowZoneValidationExceptionOnCreateWhenZoneIsNullAndLogIt()
+	public void ShouldThrowZoneValidationExceptionOnCreateWhenZoneIsNullAndLogItAsync()
 	{
 		// given
 		Zone? nullZone = null;
@@ -33,40 +34,40 @@ public partial class ZoneServiceTests
 	}
 
 	[Fact]
-	public void ShouldThrowZoneValidationExceptionOnCreateWhenZoneIsInvalidAndLogIt()
+	public async Task ShouldThrowZoneValidationExceptionOnCreateWhenZoneIsInvalidAndLogIt()
 	{
 		// given
 		Zone randomZone = CreateInvalidZone();
 		Zone invalidZone = randomZone;
 		var invalidZoneException = new InvalidZoneException();
 
-		invalidZoneException.AddData(
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.Id),
-			values: "Invalid guid id");
+			value: "Invalid guid id");
 
-		invalidZoneException.AddData(
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.RegionId),
-			values: "Invalid guid id");
-		
-		invalidZoneException.AddData(
+			value: "Invalid guid id");
+
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.CreatedBy),
-			values: "Invalid guid id");
-		
-		invalidZoneException.AddData(
+			value: "Invalid guid id");
+
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.UpdatedBy),
-			values: "Invalid guid id");
-		
-		invalidZoneException.AddData(
+			value: "Invalid guid id");
+
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.Boundary),
-			values: "Invalid zone boundary");
-		
-		invalidZoneException.AddData(
+			value: "Invalid zone boundary");
+
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.CreatedDate),
-			values: "Invalid date time offset");
-		
-		invalidZoneException.AddData(
+			value: "Invalid date time offset");
+
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.UpdatedDate),
-			values: "Invalid date time offset");
+			value: "Invalid date time offset");
 
 		var zoneValidationException = new ZoneValidationException(invalidZoneException);
 
@@ -74,7 +75,7 @@ public partial class ZoneServiceTests
 		ValueTask<Zone> createZoneTask = zoneService.CreateZoneAsync(invalidZone);
 
 		// then
-		Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
+		await Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
 
 		loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(zoneValidationException))),
@@ -88,19 +89,21 @@ public partial class ZoneServiceTests
 	}
 
 	[Fact]
-	public void ShouldThrowZoneValidationExceptionOnCreateWhenUpdatedDateAndCreatedDateAreNotSameAndLogIt()
+	public async Task ShouldThrowZoneValidationExceptionOnCreateWhenUpdatedDateAndCreatedDateAreNotSameAndLogItAsync()
 	{
 		// given
+		DateTimeOffset firstRandomDateTimeOffset = GetRandomDateTime();
+		DateTimeOffset secondRandomDateTimeOffset = GetRandomDateTime();
+
+		Zone randomZone =
+			CreateRandomZone(createdDate: firstRandomDateTimeOffset, updatedDate: secondRandomDateTimeOffset);
 		
-		DateTimeOffset randomDateTime = GetRandomDateTime();
-		
-		Zone randomZone = CreateRandomZone(createdDate: randomDateTime, updatedDate: randomDateTime);
 		Zone invalidZone = randomZone;
 		var invalidZoneException = new InvalidZoneException();
 
-		invalidZoneException.AddData(
+		invalidZoneException.UpsertDataList(
 			key: nameof(Zone.UpdatedDate),
-			values: $"Date is not the same as {nameof(Zone.CreatedDate)}");
+			value: $"Date is not the same as {nameof(Zone.CreatedDate)}");
 
 		var zoneValidationException = new ZoneValidationException(invalidZoneException);
 
@@ -108,11 +111,10 @@ public partial class ZoneServiceTests
 		ValueTask<Zone> createZoneTask = zoneService.CreateZoneAsync(invalidZone);
 
 		// then
-		Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
+		await Assert.ThrowsAsync<ZoneValidationException>(() => createZoneTask.AsTask());
 
-		loggingBrokerMock.Verify(broker =>
-				broker.LogError(It.Is(SameExceptionAs(zoneValidationException))),
-			Times.Once);
+		loggingBrokerMock.Verify(x =>
+			x.LogError(It.Is(SameExceptionAs(zoneValidationException))), Times.Once);
 
 		storageBrokerMock.Verify(broker =>
 				broker.InsertZoneAsync(It.IsAny<Zone>()),

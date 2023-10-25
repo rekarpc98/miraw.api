@@ -11,14 +11,24 @@ public partial class ZoneService
 		ValidateZone(zone);
 
 		Validate(
-			(IsInvalid(zone.Id), nameof(zone.Id)),
-			(IsInvalid(zone.RegionId), nameof(zone.RegionId)),
-			(IsInvalid(zone.Boundary), nameof(zone.Boundary)),
-			(IsInvalid(zone.CreatedDate), nameof(zone.CreatedDate)),
-			(IsInvalid(zone.UpdatedDate), nameof(zone.UpdatedDate)),
-			(IsInvalid(zone.CreatedBy), nameof(zone.CreatedBy)),
-			(IsInvalid(zone.UpdatedBy), nameof(zone.UpdatedBy))
+			(IsInvalid(zone.Id), nameof(Zone.Id)),
+			(IsInvalid(zone.RegionId), nameof(Zone.RegionId)),
+			(IsInvalid(zone.Boundary), nameof(Zone.Boundary)),
+			(IsInvalid(zone.CreatedDate), nameof(Zone.CreatedDate)),
+			(IsInvalid(zone.UpdatedDate), nameof(Zone.UpdatedDate)),
+			(IsInvalid(zone.CreatedBy), nameof(Zone.CreatedBy)),
+			(IsInvalid(zone.UpdatedBy), nameof(Zone.UpdatedBy)),
+			(IsNotSame(zone.UpdatedDate, zone.CreatedDate, nameof(Zone.CreatedDate)), nameof(Zone.UpdatedDate))
 		);
+	}
+
+	private static dynamic IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName)
+	{
+		return new
+		{
+			Condition = firstDate != secondDate,
+			Message = $"Date is not the same as {secondDateName}"
+		};
 	}
 
 	private static dynamic IsInvalid(DateTimeOffset dateTimeOffset) =>
@@ -50,10 +60,10 @@ public partial class ZoneService
 		{
 			if (rule.Condition)
 			{
-				invalidZoneException.AddData(parameter, rule.Message);
+				invalidZoneException.UpsertDataList(parameter, rule.Message);
 			}
 		}
-
+		
 		invalidZoneException.ThrowIfContainsErrors();
 	}
 }
