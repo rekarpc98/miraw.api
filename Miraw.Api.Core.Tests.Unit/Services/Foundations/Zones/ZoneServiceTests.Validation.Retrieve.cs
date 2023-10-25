@@ -101,4 +101,30 @@ public partial class ZoneServiceTests
 				x.LogError(It.Is(SameExceptionAs(expectedZoneValidationException))),
 			Times.Once);
 	}
+	
+	[Fact]
+	public async Task ShouldThrowValidationExceptionOnRetrieveByCoordinateWhenZoneNotFoundAndLogItAsync()
+	{
+		var randomCoordinate = new Point(1, 1);
+
+		// given
+		Point inputCoordinate = randomCoordinate;
+
+		var notFoundZoneException = new NotFoundZoneException(inputCoordinate);
+		var expectedZoneValidationException = new ZoneValidationException(notFoundZoneException);
+
+		// when
+		ValueTask<Zone> retrieveZoneByIdTask = zoneService.RetrieveZoneByCoordinateAsync(inputCoordinate);
+
+		// then
+		await Assert.ThrowsAsync<ZoneValidationException>(() => retrieveZoneByIdTask.AsTask());
+
+		storageBrokerMock.Verify(x => x.SelectZoneByCoordinateAsync(inputCoordinate), Times.Once);
+
+		storageBrokerMock.VerifyNoOtherCalls();
+
+		loggingBrokerMock.Verify(x =>
+				x.LogError(It.Is(SameExceptionAs(expectedZoneValidationException))),
+			Times.Once);
+	}
 }
