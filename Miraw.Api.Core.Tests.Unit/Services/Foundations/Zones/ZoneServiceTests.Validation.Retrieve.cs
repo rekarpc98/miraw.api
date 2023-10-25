@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using Miraw.Api.Core.Models.Zones;
+﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
 

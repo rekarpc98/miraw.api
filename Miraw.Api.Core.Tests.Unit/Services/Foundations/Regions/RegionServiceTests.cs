@@ -2,7 +2,6 @@
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Regions;
-using Miraw.Api.Core.Models.Users.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Regions;
 using Moq;
 using NetTopologySuite.Geometries;
