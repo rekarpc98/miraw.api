@@ -10,8 +10,8 @@ public partial class UserServiceTests
 	public async Task ShouldThrowUserValidationExceptionOnRegisterIfCreateAndUpdateDatesAreNotSameAndLogItAsync()
 	{
 		// given
-		var randomUser = CreateRandomUser();
-		var invalidUser = randomUser;
+		User randomUser = CreateRandomUser();
+		User invalidUser = randomUser;
 
 		invalidUser.UpdatedDate = invalidUser.UpdatedDate.AddDays(3);
 
