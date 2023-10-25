@@ -1,6 +1,7 @@
 ﻿using Miraw.Api.Core.Models.Zones;
 using Miraw.Api.Core.Models.Zones.Exceptions;
 using Moq;
+using NetTopologySuite.Geometries;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Foundations.Zones;
 
@@ -58,6 +59,31 @@ public partial class ZoneServiceTests
 		await Assert.ThrowsAsync<ZoneValidationException>(() => retrieveZoneByIdTask.AsTask());
 
 		storageBrokerMock.Verify(x => x.SelectZoneByIdAsync(randomGuid), Times.Once);
+
+		storageBrokerMock.VerifyNoOtherCalls();
+
+		loggingBrokerMock.Verify(x =>
+				x.LogError(It.Is(SameExceptionAs(expectedZoneValidationException))),
+			Times.Once);
+	}
+
+	[Fact]
+	public async Task ShouldThrowValidationExceptionOnRetrieveByCoordinateWhenInputCoordinateIsInvalidAndLogItAsync()
+	{
+		// given
+		var invalidCoordinate = new Point(0, 0);
+		Point inputCoordinate = invalidCoordinate;
+		
+		var invalidZoneException = new InvalidZoneException("Coordinate", inputCoordinate);
+		var expectedZoneValidationException = new ZoneValidationException(invalidZoneException);
+		
+		// when
+		ValueTask<Zone> retrieveZoneByIdTask = zoneService.RetrieveZoneByCoordinateAsync(inputCoordinate);
+
+		// then
+		await Assert.ThrowsAsync<ZoneValidationException>(() => retrieveZoneByIdTask.AsTask());
+
+		storageBrokerMock.Verify(x => x.SelectZoneByCoordinateAsync(inputCoordinate), Times.Once);
 
 		storageBrokerMock.VerifyNoOtherCalls();
 
