@@ -67,12 +67,11 @@ public partial class ZoneService
 		invalidZoneException.ThrowIfContainsErrors();
 	}
 
-	private static void ValidateZoneId(Guid? zoneId)
+	private static void ValidateZoneId(Guid zoneId)
 	{
-		if (zoneId == Guid.Empty || zoneId == null)
+		if (zoneId == Guid.Empty)
 		{
-			string parameterValue = zoneId is null ? "null" : zoneId.ToString()!;
-			throw new InvalidZoneException(nameof(Zone.Id), parameterValue);
+			throw new InvalidZoneException(nameof(Zone.Id), zoneId);
 		}
 	}
 }
