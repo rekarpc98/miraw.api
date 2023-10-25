@@ -31,7 +31,7 @@ public partial class RegionService
 	{
 		var regionValidationException = new RegionValidationException(exception);
 		
-		_loggingBroker.LogError(regionValidationException);
+		loggingBroker.LogError(regionValidationException);
 		
 		return regionValidationException;
 	}

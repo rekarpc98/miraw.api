@@ -7,25 +7,25 @@ namespace Miraw.Api.Core.Services.Foundations.Users;
 
 public partial class UserService : IUserService
 {
-	private readonly IDateTimeBroker _dateTimeBroker;
-	private readonly ILoggingBroker _loggingBroker;
-	private readonly IStorageBroker _storageBroker;
+	private readonly IDateTimeBroker dateTimeBroker;
+	private readonly ILoggingBroker loggingBroker;
+	private readonly IStorageBroker storageBroker;
 
 	public UserService(IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker, IStorageBroker storageBroker)
 	{
-		_dateTimeBroker = dateTimeBroker;
-		_loggingBroker = loggingBroker;
-		_storageBroker = storageBroker;
+		this.dateTimeBroker = dateTimeBroker;
+		this.loggingBroker = loggingBroker;
+		this.storageBroker = storageBroker;
 	}
 
 	public ValueTask<User> RegisterUserAsync(User user) => TryCatch(async () =>
 	{
 		ValidateUserOnRegister(user);
 
-		return await _storageBroker.InsertUserAsync(user);
+		return await storageBroker.InsertUserAsync(user);
 	});
 
-	public IQueryable<User> RetrieveAllUsers() => TryCatch(() => _storageBroker.SelectAllUsers());
+	public IQueryable<User> RetrieveAllUsers() => TryCatch(() => storageBroker.SelectAllUsers());
 
 	public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)
 	{
@@ -37,7 +37,7 @@ public partial class UserService : IUserService
 		{
 			ValidateUserName(userName);
 
-			IQueryable<User> users =  _storageBroker.SelectUsersByName(userName);
+			IQueryable<User> users =  storageBroker.SelectUsersByName(userName);
 
 			return users;
 		});
@@ -48,12 +48,12 @@ public partial class UserService : IUserService
 		{
 			ValidateUserOnModify(user);
 			
-			var maybeUser = await _storageBroker.SelectUserByIdAsync(user.Id);
+			var maybeUser = await storageBroker.SelectUserByIdAsync(user.Id);
 			
 			ValidateStorageUser(maybeUser, user.Id);
 			ValidateAgainstStorageUserOnModify(user, maybeUser!);
 
-			return await _storageBroker.UpdateUserAsync(user);
+			return await storageBroker.UpdateUserAsync(user);
 		});
 
 	public async ValueTask<User> RemoveUserByIdAsync(Guid userId)

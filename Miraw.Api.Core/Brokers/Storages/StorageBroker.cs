@@ -6,11 +6,11 @@ namespace Miraw.Api.Core.Brokers.Storages;
 //public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
 public partial class StorageBroker : DbContext, IStorageBroker
 {
-	private readonly IConfiguration _configuration;
+	private readonly IConfiguration configuration;
 	
 	public StorageBroker(IConfiguration configuration)
 	{
-		_configuration = configuration;
+		this.configuration = configuration;
 		Database.Migrate();
 	}
 
@@ -66,7 +66,7 @@ public partial class StorageBroker : DbContext, IStorageBroker
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-		string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
+		string connectionString = configuration.GetConnectionString("DefaultConnection")!;
 		optionsBuilder.UseSqlServer(connectionString, x => x.UseNetTopologySuite());
 	}
 }

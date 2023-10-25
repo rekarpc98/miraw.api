@@ -16,6 +16,7 @@ public class UserProcessingService : IUserProcessingService
 	{
 		this.userService = userService;
 	}
+	
 	public int RetrieveUsersCount()
 	{
 		IQueryable<User> users = userService.RetrieveAllUsers();

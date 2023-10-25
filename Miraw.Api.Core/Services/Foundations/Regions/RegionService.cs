@@ -7,13 +7,13 @@ namespace Miraw.Api.Core.Services.Foundations.Regions;
 
 public partial class RegionService : IRegionService
 {
-	private readonly IStorageBroker _storageBroker;
-	private readonly ILoggingBroker _loggingBroker;
+	private readonly IStorageBroker storageBroker;
+	private readonly ILoggingBroker loggingBroker;
 
 	public RegionService(IStorageBroker storageBroker, ILoggingBroker loggingBroker)
 	{
-		_storageBroker = storageBroker;
-		_loggingBroker = loggingBroker;
+		this.storageBroker = storageBroker;
+		this.loggingBroker = loggingBroker;
 	}
 
 	public ValueTask<Region> CreateRegionAsync(Region region) =>
@@ -21,7 +21,7 @@ public partial class RegionService : IRegionService
 		{
 			ValidateRegionOnCreate(region);
 
-			return await _storageBroker.InsertRegionAsync(region);
+			return await storageBroker.InsertRegionAsync(region);
 		});
 
 	public ValueTask<Region> RetrieveRegionAsync(Guid regionId) =>
@@ -29,7 +29,7 @@ public partial class RegionService : IRegionService
 		{
 			ValidateRegionId(regionId);
 
-			Region? storageRegion = await _storageBroker.SelectRegionByIdAsync(regionId);
+			Region? storageRegion = await storageBroker.SelectRegionByIdAsync(regionId);
 
 			ValidateRegionStorage(storageRegion, regionId);
 

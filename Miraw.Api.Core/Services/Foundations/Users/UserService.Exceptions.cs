@@ -85,7 +85,7 @@ public partial class UserService
 	private Exception CreateAndLogDependencyValidationException(AlreadyExistsUserException alreadyExistsStudentException)
 	{
 		var validationException = new UserValidationException(alreadyExistsStudentException);
-		_loggingBroker.LogError(validationException);
+		loggingBroker.LogError(validationException);
 
 		return validationException;
 	}
@@ -93,7 +93,7 @@ public partial class UserService
 	private Exception CreateAndLogDependencyException(Exception exception)
 	{
 		var userDependencyException = new UserDependencyException(exception);
-		_loggingBroker.LogError(userDependencyException);
+		loggingBroker.LogError(userDependencyException);
 
 		return userDependencyException;
 	}
@@ -101,7 +101,7 @@ public partial class UserService
 	private Exception CreateAndLogCriticalDependencyException(Exception exception)
 	{
 		var validationException = new UserValidationException(exception);
-		_loggingBroker.LogCritical(validationException);
+		loggingBroker.LogCritical(validationException);
 		
 		return validationException;
 	}
@@ -109,7 +109,7 @@ public partial class UserService
 	private Exception CreateAndLogValidationException(Exception exception)
 	{
 		var userDependencyValidationException = new UserValidationException(exception);
-		_loggingBroker.LogError(userDependencyValidationException);
+		loggingBroker.LogError(userDependencyValidationException);
 		
 		return userDependencyValidationException;
 	}
@@ -117,7 +117,7 @@ public partial class UserService
 	private Exception CreateAndLogServiceException(Exception exception)
 	{
 		var userServiceException = new UserServiceException(exception);
-		_loggingBroker.LogError(userServiceException);
+		loggingBroker.LogError(userServiceException);
 		
 		return userServiceException;
 	}

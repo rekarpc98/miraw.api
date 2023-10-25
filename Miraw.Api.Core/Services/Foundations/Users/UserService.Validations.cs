@@ -100,7 +100,7 @@ public partial class UserService
 
 	private bool IsDateNotRecent(DateTimeOffset date)
 	{
-		var currentDate = _dateTimeBroker.GetCurrentDateTime();
+		var currentDate = dateTimeBroker.GetCurrentDateTime();
 
 		var timeDifference = currentDate - date;
 
