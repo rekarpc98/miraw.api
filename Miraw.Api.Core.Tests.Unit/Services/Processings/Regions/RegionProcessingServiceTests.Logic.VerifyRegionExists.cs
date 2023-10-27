@@ -11,24 +11,23 @@ public partial class RegionProcessingServiceTests
 	public async Task ShouldReturnTrueIfRegionExists()
 	{
 		// given
-		var randomRegionId = Guid.NewGuid();
-		Guid inputRegionId = randomRegionId;
-		Region randomRegion = CreateRandomRegion(randomRegionId);
-		Region storageRegion = randomRegion;
-		const bool expected = true;
+		IQueryable<Region> randomRegions = CreateRandomRegions();
+		IQueryable<Region> storageRegions = randomRegions;
+		Guid inputRegionId = randomRegions.First().Id;
 		
-		regionServiceMock.Setup(x => x.RetrieveRegionAsync(inputRegionId))
-			.ReturnsAsync(storageRegion);
+		const bool expectedValue = true;
+		
+		regionServiceMock.Setup(x => x.RetrieveAllRegionsAsync())
+			.ReturnsAsync(storageRegions);
 		
 		// when
 		bool actual = await regionProcessingService.VerifyRegionExistsAsync(inputRegionId);
 		
 		// then
-		
-		actual.Should().Be(expected);
+		actual.Should().Be(expectedValue);
 		
 		regionServiceMock.Verify(x => 
-				x.RetrieveRegionAsync(inputRegionId),
+				x.RetrieveAllRegionsAsync(),
 			Times.Once);
 		
 		loggingBrokerMock.Verify(x => x.LogError(It.IsAny<Exception>()), Times.Never);
@@ -41,24 +40,23 @@ public partial class RegionProcessingServiceTests
 	public async Task ShouldReturnFalseIfRegionNotExists()
 	{
 		// given
-		var randomRegionId = Guid.NewGuid();
-		Guid inputRegionId = randomRegionId;
-		Region nullRegion = null!;
-		Region storageRegion = nullRegion;
-		const bool expected = false;
+		IQueryable<Region> randomRegions = CreateRandomRegions();
+		IQueryable<Region> storageRegions = randomRegions;
+		Guid inputRegionId = Guid.NewGuid();
 		
-		regionServiceMock.Setup(x => x.RetrieveRegionAsync(inputRegionId))
-			.ReturnsAsync(storageRegion);
+		const bool expectedValue = false;
+		
+		regionServiceMock.Setup(x => x.RetrieveAllRegionsAsync())
+			.ReturnsAsync(storageRegions);
 		
 		// when
 		bool actual = await regionProcessingService.VerifyRegionExistsAsync(inputRegionId);
 		
 		// then
-		
-		actual.Should().Be(expected);
+		actual.Should().Be(expectedValue);
 		
 		regionServiceMock.Verify(x => 
-				x.RetrieveRegionAsync(inputRegionId),
+				x.RetrieveAllRegionsAsync(),
 			Times.Once);
 		
 		loggingBrokerMock.Verify(x => x.LogError(It.IsAny<Exception>()), Times.Never);
