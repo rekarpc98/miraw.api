@@ -1,5 +1,6 @@
 ﻿using Miraw.Api.Core.Models.Orchestrations.Users.Exception;
 using Miraw.Api.Core.Models.Processings.Regions;
+using Miraw.Api.Core.Models.Processings.Users;
 using Miraw.Api.Core.Models.Regions.Exceptions;
 using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Models.Users.Exceptions;
@@ -62,12 +63,13 @@ public partial class UserOrchestrationServiceTests
 			key: nameof(User.PhoneNumber),
 			value: "PhoneNumber is invalid");
 
-		var userValidationException = new UserValidationException(invalidUserException);
+		var userProcessingDependencyValidationException =
+			new UserProcessingDependencyValidationException(invalidUserException);
 
 		regionProcessingServiceMock.Setup(x => x.ThrowIfRegionNotExistsAsync(inputUser.RegionId));
-		
+
 		userProcessingServiceMock.Setup(x => x.RegisterUserAsync(inputUser))
-			.ThrowsAsync(userValidationException);
+			.ThrowsAsync(userProcessingDependencyValidationException);
 
 		var expectedUserOrchestrationException =
 			new UserOrchestrationDependencyValidationException(invalidUserException);
@@ -79,7 +81,10 @@ public partial class UserOrchestrationServiceTests
 		await Assert.ThrowsAsync<UserOrchestrationDependencyValidationException>(() => registerUserTask.AsTask());
 
 		loggingBrokerMock.Verify(x => x.LogError(It.Is(SameExceptionAs(expectedUserOrchestrationException))));
-		userProcessingServiceMock.Verify(x => x.RegisterUserAsync(It.IsAny<User>()), Times.Never);
+
+		userProcessingServiceMock.Verify(x =>
+				x.RegisterUserAsync(It.IsAny<User>()),
+			Times.Once);
 
 		regionProcessingServiceMock.Verify(x =>
 				x.ThrowIfRegionNotExistsAsync(inputUser.RegionId),
