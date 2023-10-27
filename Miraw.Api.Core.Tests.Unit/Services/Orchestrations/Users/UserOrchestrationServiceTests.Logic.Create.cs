@@ -35,7 +35,7 @@ public partial class UserOrchestrationServiceTests
 		actualUser.Should().BeEquivalentTo(expectedUser);
 		
 		regionProcessingServiceMock.Verify(x =>
-				x.VerifyRegionExistsAsync(userRegionId),
+				x.ThrowIfRegionNotExistsAsync(userRegionId),
 			Times.Once);
 		
 		userProcessingServiceMock.Verify(x =>

@@ -37,6 +37,7 @@ public partial class UserOrchestrationServiceTests
 		
 		loggingBrokerMock.Verify(x => x.LogError(It.Is(SameExceptionAs(expectedUserOrchestrationException))));
 		userProcessingServiceMock.Verify(x => x.RegisterUserAsync(It.IsAny<User>()), Times.Never);
+		regionProcessingServiceMock.Verify(x => x.ThrowIfRegionNotExistsAsync(userRegionId), Times.Once);
 		
 		regionProcessingServiceMock.VerifyNoOtherCalls();
 		userProcessingServiceMock.VerifyNoOtherCalls();
