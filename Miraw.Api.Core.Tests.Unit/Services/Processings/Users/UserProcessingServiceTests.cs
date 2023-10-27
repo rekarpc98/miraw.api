@@ -1,4 +1,5 @@
-﻿using Miraw.Api.Core.Models.Users;
+﻿using Miraw.Api.Core.Brokers.Loggings;
+using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Services.Foundations.Users;
 using Miraw.Api.Core.Services.Processings.Users;
 using Moq;
@@ -10,10 +11,11 @@ public partial class UserProcessingServiceTests
 {
 	private readonly IUserProcessingService userProcessingService;
 	private readonly Mock<IUserService> userServiceMock = new();
+	private readonly Mock<ILoggingBroker> loggingBrokerMock = new();
 
 	public UserProcessingServiceTests()
 	{
-		userProcessingService = new UserProcessingService(userServiceMock.Object);
+		userProcessingService = new UserProcessingService(userServiceMock.Object, loggingBrokerMock.Object);
 	}
 
 	private static IQueryable<User> CreateRandomUsers(DateTimeOffset? date = null)
