@@ -44,4 +44,9 @@ public partial class RegionProcessingServiceTests
 
 		return filler;
 	}
+
+	private static IQueryable<Region> CreateRandomRegions(int count = 5)
+	{
+		return CreteRegionFiller().Create(count).AsQueryable();
+	}
 }
