@@ -31,6 +31,6 @@ public partial class UserProcessingService : IUserProcessingService
 
 	public async ValueTask<User> RegisterUserAsync(User user)
 	{
-		throw new NotImplementedException();
+		return await userService.RegisterUserAsync(user);
 	}
 }
