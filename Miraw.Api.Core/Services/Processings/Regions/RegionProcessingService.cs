@@ -1,4 +1,5 @@
 ﻿using Miraw.Api.Core.Brokers.Loggings;
+using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Services.Foundations.Regions;
 
 namespace Miraw.Api.Core.Services.Processings.Regions;
@@ -15,7 +16,7 @@ public class RegionProcessingService : IRegionProcessingService
 	}
 	public async ValueTask<bool> VerifyRegionExistsAsync(Guid regionId)
 	{
-		await regionService.RetrieveRegionAsync(regionId);
-		return true;
+		IQueryable<Region> regions =  await regionService.RetrieveAllRegionsAsync();
+		return regions.Any(region => region.Id == regionId);
 	}
 }
