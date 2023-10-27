@@ -20,12 +20,12 @@ public partial class UserOrchestrationServiceTests
 			new UserOrchestrationService(userProcessingServiceMock.Object, regionProcessingServiceMock.Object);
 	}
 
-	private static Region CreateRandomRegion()
+	private static Region CreateRandomRegion(Guid? regionId = null)
 	{
-		return CreateRegionFiller().Create();
+		return CreateRegionFiller(regionId ?? Guid.NewGuid()).Create();
 	}
 
-	private static Filler<Region> CreateRegionFiller()
+	private static Filler<Region> CreateRegionFiller(Guid regionId)
 	{
 		var filler = new Filler<Region>();
 
@@ -54,6 +54,8 @@ public partial class UserOrchestrationServiceTests
 		filler.Setup()
 			.OnProperty(x => x.RegionId)
 			.Use(regionId)
+			.OnProperty(x => x.Region)
+			.IgnoreIt()
 			.OnProperty(x => x.UpdatedDate)
 			.IgnoreIt()
 			.OnProperty(x => x.DeletedDate)

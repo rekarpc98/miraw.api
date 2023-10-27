@@ -9,7 +9,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Orchestrations.Users;
 public partial class UserOrchestrationServiceTests
 {
 	[Fact]
-	public async ValueTask ShouldCreateUser()
+	public async Task ShouldCreateUserAsync()
 	{
 		// given
 		Region randomRegion = CreateRandomRegion();
@@ -19,29 +19,29 @@ public partial class UserOrchestrationServiceTests
 		User inputUser = randomUser;
 		User storageUser = inputUser;
 		User expectedUser = inputUser.DeepClone();
-
+		
 		regionProcessingServiceMock.Setup(x =>
 				x.VerifyRegionExistsAsync(userRegionId))
 			.ReturnsAsync(true);
-
+		
 		userProcessingServiceMock.Setup(x =>
 				x.RegisterUserAsync(inputUser))
 			.ReturnsAsync(storageUser);
-
+		
 		// when
 		User actualUser = await userOrchestrationService.CreateUserAsync(inputUser);
-
+		
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
-
+		
 		regionProcessingServiceMock.Verify(x =>
 				x.VerifyRegionExistsAsync(userRegionId),
 			Times.Once);
-
+		
 		userProcessingServiceMock.Verify(x =>
 				x.RegisterUserAsync(inputUser),
 			Times.Once);
-
+		
 		regionProcessingServiceMock.VerifyNoOtherCalls();
 		userProcessingServiceMock.VerifyNoOtherCalls();
 	}
