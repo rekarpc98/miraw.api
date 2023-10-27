@@ -1,11 +1,10 @@
-﻿
-using Miraw.Api.Core.Models.Users;
+﻿using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Services.Foundations.Users;
 using Miraw.Api.Core.Services.Processings.Users;
 using Moq;
 using Tynamix.ObjectFiller;
 
-namespace Miraw.Api.Core.Tests.Unit.Services.Processings;
+namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Users;
 
 public partial class UserProcessingServiceTests
 {

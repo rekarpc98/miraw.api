@@ -1,7 +1,7 @@
 using Miraw.Api.Core.Models.Users;
 using Moq;
 
-namespace Miraw.Api.Core.Tests.Unit.Services.Processings;
+namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Users;
 
 public partial class UserProcessingServiceTests
 {
@@ -19,7 +19,6 @@ public partial class UserProcessingServiceTests
 		int actualUsersCount = userProcessingService.RetrieveUsersCount();
 
 		// then
-		
 		Assert.Equal(expectedUsersCount, actualUsersCount);
 		
 		userServiceMock.Verify(x => x.RetrieveAllUsers(), Times.Once);
