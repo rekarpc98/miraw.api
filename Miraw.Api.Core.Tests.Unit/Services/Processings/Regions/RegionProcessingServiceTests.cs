@@ -9,7 +9,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Regions;
 
 public partial class RegionProcessingServiceTests
 {
-	private IRegionProcessingService regionProcessingService;
+	private readonly IRegionProcessingService regionProcessingService;
 
 	private readonly Mock<IRegionService> regionServiceMock = new();
 	private readonly Mock<ILoggingBroker> loggingBrokerMock = new();
