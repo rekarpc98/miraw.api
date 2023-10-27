@@ -14,9 +14,15 @@ public class RegionProcessingService : IRegionProcessingService
 		this.regionService = regionService;
 		this.loggingBroker = loggingBroker;
 	}
+
 	public async ValueTask<bool> VerifyRegionExistsAsync(Guid regionId)
 	{
-		IQueryable<Region> regions =  await regionService.RetrieveAllRegionsAsync();
+		IQueryable<Region> regions = await regionService.RetrieveAllRegionsAsync();
 		return regions.Any(region => region.Id == regionId);
+	}
+
+	public async ValueTask ThrowIfRegionNotExistsAsync(Guid regionId)
+	{
+		throw new NotImplementedException();
 	}
 }

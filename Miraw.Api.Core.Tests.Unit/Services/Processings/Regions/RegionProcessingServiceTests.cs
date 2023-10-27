@@ -1,9 +1,11 @@
-﻿using Miraw.Api.Core.Brokers.Loggings;
+﻿using System.Linq.Expressions;
+using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Services.Foundations.Regions;
 using Miraw.Api.Core.Services.Processings.Regions;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Regions;
 
@@ -49,4 +51,7 @@ public partial class RegionProcessingServiceTests
 	{
 		return CreteRegionFiller().Create(count).AsQueryable();
 	}
+
+	private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException) =>
+		actualException => actualException.SameExceptionAs(expectedException);
 }
