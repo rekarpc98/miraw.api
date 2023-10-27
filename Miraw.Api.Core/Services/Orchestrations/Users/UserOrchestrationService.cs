@@ -1,4 +1,4 @@
-﻿using Miraw.Api.Core.Models.Users;
+using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Services.Processings.Regions;
 using Miraw.Api.Core.Services.Processings.Users;
 
@@ -18,6 +18,7 @@ public class UserOrchestrationService : IUserOrchestrationService
 
 	public async ValueTask<User> CreateUserAsync(User user)
 	{
-		throw new NotImplementedException();
+		await regionProcessingService.VerifyRegionExistsAsync(user.RegionId);
+		return await userProcessingService.RegisterUserAsync(user);
 	}
 }
