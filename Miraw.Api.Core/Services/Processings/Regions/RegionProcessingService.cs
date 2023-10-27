@@ -15,6 +15,7 @@ public class RegionProcessingService : IRegionProcessingService
 	}
 	public async ValueTask<bool> VerifyRegionExistsAsync(Guid regionId)
 	{
-		throw new NotImplementedException();
+		await regionService.RetrieveRegionAsync(regionId);
+		return true;
 	}
 }
