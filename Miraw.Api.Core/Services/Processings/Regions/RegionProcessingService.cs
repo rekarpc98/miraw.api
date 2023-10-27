@@ -28,19 +28,38 @@ public class RegionProcessingService : IRegionProcessingService
 		try
 		{
 			Region maybeRegion = await regionService.RetrieveRegionAsync(regionId);
+
+			ValidateStorageRegion(maybeRegion);
+		}
+		catch (NullRegionException nullRegionException)
+		{
+			var regionProcessingValidationException =
+				new RegionProcessingDependencyValidationException(nullRegionException);
+
+			loggingBroker.LogError(regionProcessingValidationException);
+
+			throw regionProcessingValidationException;
 		}
 		catch (RegionValidationException regionValidationException)
 		{
 			Exception? innerRegionValidationException = regionValidationException.InnerException;
 
-			RegionProcessingDependencyValidationException regionProcessingValidationException =
+			RegionProcessingDependencyValidationException regionProcessingDependencyValidationException =
 				innerRegionValidationException is not null
 					? new RegionProcessingDependencyValidationException(innerRegionValidationException)
 					: new RegionProcessingDependencyValidationException();
 
-			loggingBroker.LogError(regionProcessingValidationException);
+			loggingBroker.LogError(regionProcessingDependencyValidationException);
 
-			throw regionProcessingValidationException;
+			throw regionProcessingDependencyValidationException;
+		}
+	}
+
+	private static void ValidateStorageRegion(Region? maybeRegion)
+	{
+		if (maybeRegion is null)
+		{
+			throw new NullRegionException();
 		}
 	}
 }
