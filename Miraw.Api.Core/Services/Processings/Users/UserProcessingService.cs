@@ -3,7 +3,7 @@ using Miraw.Api.Core.Services.Foundations.Users;
 
 namespace Miraw.Api.Core.Services.Processings.Users;
 
-public class UserProcessingService : IUserProcessingService
+public partial class UserProcessingService : IUserProcessingService
 {
 	private readonly IUserService userService;
 

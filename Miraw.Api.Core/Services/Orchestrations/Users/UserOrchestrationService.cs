@@ -1,14 +1,11 @@
 using Miraw.Api.Core.Brokers.Loggings;
-using Miraw.Api.Core.Models.Orchestrations.Users.Exception;
-using Miraw.Api.Core.Models.Processings.Regions;
-using Miraw.Api.Core.Models.Processings.Users;
 using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Services.Processings.Regions;
 using Miraw.Api.Core.Services.Processings.Users;
 
 namespace Miraw.Api.Core.Services.Orchestrations.Users;
 
-public class UserOrchestrationService : IUserOrchestrationService
+public partial class UserOrchestrationService : IUserOrchestrationService
 {
 	private readonly IUserProcessingService userProcessingService;
 	private readonly IRegionProcessingService regionProcessingService;
@@ -22,34 +19,11 @@ public class UserOrchestrationService : IUserOrchestrationService
 		this.loggingBroker = loggingBroker;
 	}
 
-	public async ValueTask<User> CreateUserAsync(User user)
-	{
-		try
-		{
-			await regionProcessingService.ThrowIfRegionNotExistsAsync(user.RegionId);
-			return await userProcessingService.RegisterUserAsync(user);
-		}
-		catch (RegionProcessingDependencyValidationException regionProcessingDependencyValidationException)
-		{
-			Exception innerException = regionProcessingDependencyValidationException.InnerException!;
-			
-			var userOrchestrationDependencyValidationException =
-				new UserOrchestrationDependencyValidationException(innerException);
-			
-			loggingBroker.LogError(userOrchestrationDependencyValidationException);
-			
-			throw userOrchestrationDependencyValidationException;
-		}
-		catch (UserProcessingDependencyValidationException userProcessingDependencyValidationException)
-		{
-			Exception innerException = userProcessingDependencyValidationException.InnerException!;
-			
-			var userOrchestrationDependencyValidationException =
-				new UserOrchestrationDependencyValidationException(innerException);
-			
-			loggingBroker.LogError(userOrchestrationDependencyValidationException);
-			
-			throw userOrchestrationDependencyValidationException;
-		}
-	}
+	public async ValueTask<User> CreateUserAsync(User user) =>
+		await TryCatch(async () =>
+			{
+				await regionProcessingService.ThrowIfRegionNotExistsAsync(user.RegionId);
+				return await userProcessingService.RegisterUserAsync(user);
+			}
+		);
 }
