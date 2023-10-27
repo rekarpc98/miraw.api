@@ -9,7 +9,7 @@ namespace Miraw.Api.Core.Tests.Unit.Services.Orchestrations.Users;
 public partial class UserOrchestrationServiceTests
 {
 	[Fact]
-	public async Task ShouldThrowUserOrchestrationExceptionWhenRegionIsNotExistsAndLogItAsync()
+	public async Task ShouldThrowUserOrchestrationDependencyValidationExceptionWhenRegionIsNotExistsAndLogItAsync()
 	{
 		// given
 		Guid invalidRegionId = Guid.NewGuid();
