@@ -75,4 +75,39 @@ public partial class UserOrchestrationServiceTests
 	{
 		return actualException => expectedException.SameExceptionAs(expectedException);
 	}
+
+	private static User CreateInvalidUser(bool invalidEmail = true, bool invalidPhoneNumber = true)
+	{
+		var filler = new Filler<User>();
+
+		filler.Setup()
+			.OnProperty(x => x.CreatedDate)
+			.Use(CreateRandomDateTime())
+			.OnProperty(x => x.UpdatedDate)
+			.Use(CreateRandomDateTime())
+			.OnProperty(x => x.DeletedDate)
+			.Use(CreateRandomDateTime())
+			.OnProperty(x => x.Region)
+			.IgnoreIt()
+			.OnProperty(x => x.Email)
+			.Use(invalidEmail ? string.Empty : new EmailAddresses(".com").ToString()!)
+			.OnProperty(x => x.PhoneNumber)
+			.Use(invalidPhoneNumber ? string.Empty : RandomDigits(13));
+
+		return filler.Create();
+	}
+
+	private static string RandomDigits(int length)
+	{
+		var random = new Random();
+		string s = string.Empty;
+		for (int i = 0; i < length; i++)
+			s = String.Concat(s, random.Next(10).ToString());
+		return s;
+	}
+
+	private static DateTimeOffset CreateRandomDateTime()
+	{
+		return new DateTimeRange(earliestDate: new DateTime()).GetValue();
+	}
 }
