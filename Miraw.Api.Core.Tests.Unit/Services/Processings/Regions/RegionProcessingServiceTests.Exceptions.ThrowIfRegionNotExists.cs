@@ -1,4 +1,5 @@
 ﻿using Miraw.Api.Core.Models.Orchestrations.Processings.Regions;
+using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Models.Regions.Exceptions;
 using Moq;
 
@@ -35,6 +36,44 @@ public partial class RegionProcessingServiceTests
 		
 		regionServiceMock.Verify(x =>
 			x.RetrieveRegionAsync(invalidRegionId),
+			Times.Once);
+		
+		regionServiceMock.VerifyNoOtherCalls();
+		regionServiceMock.VerifyNoOtherCalls();
+	}
+	
+	[Fact]
+	public async Task ShouldThrowRegionProcessingValidationExceptionIfRegionIsNullAndLogItAsync()
+	{
+		// given
+		Guid randomId = Guid.NewGuid();
+		Guid inputRegionId = randomId;
+		
+		Region? nullRegion = null;
+		Region? returnedRegion = nullRegion;
+		
+		var nullRegionException = new NullRegionException();
+		
+		var expectedRegionProcessingValidationException =
+			new RegionProcessingDependencyValidationException(nullRegionException);
+
+		
+		regionServiceMock.Setup(x =>
+				x.RetrieveRegionAsync(inputRegionId))!
+			.ReturnsAsync(returnedRegion);
+		
+		// when
+		ValueTask throwIfRegionNotExistsTask = regionProcessingService.ThrowIfRegionNotExistsAsync(inputRegionId);
+
+		// then
+		await Assert.ThrowsAsync<RegionProcessingDependencyValidationException>(() =>
+			throwIfRegionNotExistsTask.AsTask());
+
+		loggingBrokerMock.Verify(x =>
+			x.LogError(It.Is(SameExceptionAs(expectedRegionProcessingValidationException))));
+		
+		regionServiceMock.Verify(x =>
+				x.RetrieveRegionAsync(inputRegionId),
 			Times.Once);
 		
 		regionServiceMock.VerifyNoOtherCalls();
