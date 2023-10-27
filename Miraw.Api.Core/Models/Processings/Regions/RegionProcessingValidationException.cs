@@ -1,6 +1,6 @@
 ﻿using Xeptions;
 
-namespace Miraw.Api.Core.Models.Orchestrations.Processings.Regions;
+namespace Miraw.Api.Core.Models.Processings.Regions;
 
 public class RegionProcessingValidationException : Xeption
 {

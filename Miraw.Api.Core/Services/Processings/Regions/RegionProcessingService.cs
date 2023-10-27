@@ -1,5 +1,5 @@
 ﻿using Miraw.Api.Core.Brokers.Loggings;
-using Miraw.Api.Core.Models.Orchestrations.Processings.Regions;
+using Miraw.Api.Core.Models.Processings.Regions;
 using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Models.Regions.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Regions;
