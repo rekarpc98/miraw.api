@@ -72,4 +72,28 @@ public partial class UserProcessingServiceTests
 
 		return filler;
 	}
+
+	private static User CreateRandomUser(Guid? regionId = null)
+	{
+		return CreateUserFiller(regionId ?? Guid.NewGuid()).Create();
+	}
+
+	private static Filler<User> CreateUserFiller(Guid regionId)
+	{
+		var filler = new Filler<User>();
+
+		filler.Setup()
+			.OnProperty(x => x.RegionId)
+			.Use(regionId)
+			.OnProperty(x => x.Region)
+			.IgnoreIt()
+			.OnProperty(x => x.UpdatedDate)
+			.IgnoreIt()
+			.OnProperty(x => x.DeletedDate)
+			.IgnoreIt()
+			.OnProperty(x => x.CreatedDate)
+			.IgnoreIt();
+
+		return filler;
+	}
 }
