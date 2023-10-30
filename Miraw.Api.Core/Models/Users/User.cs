@@ -7,8 +7,8 @@ public class User : Auditable
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; } = null!;
-	public string Email { get; set; } = null!;
-	public string? PhoneNumber { get; set; }
+	public string? Email { get; set; }
+	public string PhoneNumber { get; set; } = null!;
 	public Guid RegionId { get; set; }
 	public Region? Region { get; set; }
 	public Gender Gender { get; set; }

@@ -13,6 +13,12 @@ public partial class StorageBroker
 
 	public async ValueTask<User?> SelectUserByIdAsync(Guid userId) => await SelectAsync<User>(userId);
 
+	public async ValueTask<User?> SelectUsersByPhoneNumber(string phoneNumber)
+	{
+		phoneNumber = phoneNumber.Trim();
+		return await Users.FirstOrDefaultAsync(user => user.PhoneNumber == phoneNumber);
+	}
+	
 	public IQueryable<User> SelectUsersByName(string userName)
 	{
 		userName = userName.Trim();

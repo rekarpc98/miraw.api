@@ -43,6 +43,11 @@ public partial class UserService : IUserService
 		});
 	}
 
+	public ValueTask<User> RetrieveUsersByPhoneNumberAsync(string phoneNumber)
+	{
+		throw new NotImplementedException();
+	}
+
 	public async ValueTask<User> ModifyUserAsync(User user) =>
 		await TryCatch(async () =>
 		{
