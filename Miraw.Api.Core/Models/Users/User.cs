@@ -12,4 +12,7 @@ public class User : Auditable
 	public Guid RegionId { get; set; }
 	public Region? Region { get; set; }
 	public Gender Gender { get; set; }
+
+	public Guid PasswordId { get; set; }
+	public Password? Password { get; set; }
 }
