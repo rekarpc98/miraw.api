@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Miraw.Api.Core.Brokers.DateTimes;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
@@ -43,9 +44,9 @@ public partial class UserService : IUserService
 		});
 	}
 
-	public ValueTask<User> RetrieveUsersByPhoneNumberAsync(string phoneNumber)
+	public async ValueTask<User> RetrieveUsersByPhoneNumberAsync(string phoneNumber)
 	{
-		throw new NotImplementedException();
+		return await storageBroker.SelectUsersByPhoneNumber(phoneNumber);
 	}
 
 	public async ValueTask<User> ModifyUserAsync(User user) =>
