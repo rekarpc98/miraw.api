@@ -30,8 +30,8 @@ public partial class UserProcessingService : IUserProcessingService
 		}
 	}
 
-	public ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber)
+	public async ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber)
 	{
-		throw new NotImplementedException();
+		return await userService.RetrieveUserByPhoneNumberAsync(phoneNumber);
 	}
 }
