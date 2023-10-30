@@ -44,7 +44,7 @@ public partial class UserService : IUserService
 		});
 	}
 
-	public async ValueTask<User> RetrieveUsersByPhoneNumberAsync(string phoneNumber)
+	public async ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber)
 	{
 		return await storageBroker.SelectUsersByPhoneNumber(phoneNumber);
 	}

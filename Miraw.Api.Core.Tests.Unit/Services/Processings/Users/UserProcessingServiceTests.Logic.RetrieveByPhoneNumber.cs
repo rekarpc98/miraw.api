@@ -14,17 +14,20 @@ public partial class UserProcessingServiceTests
 		// given
 		User randomUser = CreateRandomUser();
 		User inputUser = randomUser;
+		string inputPhoneNumber = inputUser.PhoneNumber;
 		User storageUser = inputUser;
 		User expectedUser = storageUser.DeepClone();
 
-		userServiceMock.Setup(x => x.RegisterUserAsync(inputUser)).ReturnsAsync(storageUser);
+		userServiceMock.Setup(x =>
+				x.RetrieveUserByPhoneNumberAsync(inputPhoneNumber))
+			.ReturnsAsync(storageUser);
 
 		// when
-		User actualUser = await userProcessingService.RegisterUserAsync(inputUser);
+		User actualUser = await userProcessingService.RetrieveUserByPhoneNumberAsync(inputPhoneNumber);
 
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
-		userServiceMock.Verify(x => x.RegisterUserAsync(inputUser), Times.Once);
+		userServiceMock.Verify(x => x.RetrieveUserByPhoneNumberAsync(inputPhoneNumber), Times.Once);
 		userServiceMock.VerifyNoOtherCalls();
 		loggingBrokerMock.VerifyNoOtherCalls();
 	}

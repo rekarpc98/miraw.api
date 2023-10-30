@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Miraw.Api.Core.Brokers.Loggings;
+﻿using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Models.Users;
 using Miraw.Api.Core.Services.Foundations.Users;
 
@@ -16,6 +15,8 @@ public partial class UserProcessingService : IUserProcessingService
 		this.loggingBroker = loggingBroker;
 	}
 
+	public async ValueTask<User> RegisterUserAsync(User user) => await userService.RegisterUserAsync(user);
+
 	public int RetrieveUsersCount()
 	{
 		try
@@ -29,8 +30,8 @@ public partial class UserProcessingService : IUserProcessingService
 		}
 	}
 
-	public async ValueTask<User> RegisterUserAsync(User user)
+	public ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber)
 	{
-		return await userService.RegisterUserAsync(user);
+		throw new NotImplementedException();
 	}
 }

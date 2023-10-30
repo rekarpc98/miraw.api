@@ -4,6 +4,7 @@ namespace Miraw.Api.Core.Services.Processings.Users;
 
 public interface IUserProcessingService
 {
-	int RetrieveUsersCount();
 	ValueTask<User> RegisterUserAsync(User user);
+	int RetrieveUsersCount();
+	ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber);
 }

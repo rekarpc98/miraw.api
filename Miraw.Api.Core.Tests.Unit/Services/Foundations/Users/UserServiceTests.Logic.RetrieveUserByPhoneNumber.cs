@@ -22,7 +22,7 @@ public partial class UserServiceTests
 			.ReturnsAsync(storageUser);
 
 		// when
-		User actualUser = await userService.RetrieveUsersByPhoneNumberAsync(inputPhoneNumber);
+		User actualUser = await userService.RetrieveUserByPhoneNumberAsync(inputPhoneNumber);
 
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
