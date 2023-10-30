@@ -17,6 +17,9 @@ public partial class UserOrchestrationServiceTests
 		Guid invalidRegionId = Guid.NewGuid();
 		Guid userRegionId = invalidRegionId;
 		User randomUser = CreateRandomUser(regionId: userRegionId);
+		User inputUser = randomUser;
+		string randomString = GetRandomString();
+		string inputPassword = randomString;
 
 		var notfoundRegionException = new NotFoundRegionException(invalidRegionId);
 
@@ -32,7 +35,7 @@ public partial class UserOrchestrationServiceTests
 			new UserOrchestrationDependencyValidationException(notfoundRegionException);
 
 		// when
-		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(randomUser);
+		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
 
 		// then
 		await Assert.ThrowsAsync<UserOrchestrationDependencyValidationException>(() => registerUserTask.AsTask());
@@ -52,7 +55,9 @@ public partial class UserOrchestrationServiceTests
 		// given
 		User invalidUser = CreateInvalidUser(invalidEmail: true, invalidPhoneNumber: false);
 		User inputUser = invalidUser;
-
+		string randomString = GetRandomString();
+		string inputPassword = randomString;
+		
 		var invalidUserException = new InvalidUserException();
 
 		invalidUserException.UpsertDataList(
@@ -75,7 +80,7 @@ public partial class UserOrchestrationServiceTests
 			new UserOrchestrationDependencyValidationException(invalidUserException);
 
 		// when
-		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser);
+		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
 
 		// then
 		await Assert.ThrowsAsync<UserOrchestrationDependencyValidationException>(() => registerUserTask.AsTask());

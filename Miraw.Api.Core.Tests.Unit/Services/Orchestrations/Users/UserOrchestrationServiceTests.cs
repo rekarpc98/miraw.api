@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System.Text;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Models.Users;
@@ -37,11 +39,9 @@ public partial class UserOrchestrationServiceTests
 		filler.Setup()
 			.OnProperty(x => x.Boundary)
 			.IgnoreIt()
-			.OnProperty(x => x.UpdatedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.DeletedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.CreatedDate)
+			.OnType<DateTimeOffset>()
+			.Use(GetRandomDateTime())
+			.OnType<DateTimeOffset?>()
 			.IgnoreIt();
 
 		return filler;
@@ -61,14 +61,17 @@ public partial class UserOrchestrationServiceTests
 			.Use(regionId)
 			.OnProperty(x => x.Region)
 			.IgnoreIt()
-			.OnProperty(x => x.UpdatedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.DeletedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.CreatedDate)
+			.OnType<DateTimeOffset>()
+			.Use(GetRandomDateTime())
+			.OnType<DateTimeOffset?>()
 			.IgnoreIt();
 
 		return filler;
+	}
+
+	private static DateTimeOffset GetRandomDateTime()
+	{
+		return new DateTimeRange(earliestDate: new DateTime()).GetValue();
 	}
 
 	private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
@@ -81,12 +84,10 @@ public partial class UserOrchestrationServiceTests
 		var filler = new Filler<User>();
 
 		filler.Setup()
-			.OnProperty(x => x.CreatedDate)
-			.Use(CreateRandomDateTime())
-			.OnProperty(x => x.UpdatedDate)
-			.Use(CreateRandomDateTime())
-			.OnProperty(x => x.DeletedDate)
-			.Use(CreateRandomDateTime())
+			.OnType<DateTimeOffset>()
+			.Use(GetRandomDateTime())
+			.OnType<DateTimeOffset?>()
+			.IgnoreIt()
 			.OnProperty(x => x.Region)
 			.IgnoreIt()
 			.OnProperty(x => x.Email)
@@ -110,4 +111,23 @@ public partial class UserOrchestrationServiceTests
 	{
 		return new DateTimeRange(earliestDate: new DateTime()).GetValue();
 	}
+
+	private static string GetRandomString()
+	{
+		return new MnemonicString().GetValue();
+	}
+
+	private static string HashString(string text)
+    {
+        byte[] hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(text));
+
+        var sb = new StringBuilder();
+        foreach (byte b in hashedBytes)
+        {
+            sb.Append(b.ToString("x2"));
+        }
+
+        return sb.ToString();
+    }
+
 }

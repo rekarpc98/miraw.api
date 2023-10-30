@@ -19,6 +19,8 @@ public partial class UserOrchestrationServiceTests
 		User inputUser = randomUser;
 		User storageUser = inputUser;
 		User expectedUser = inputUser.DeepClone();
+		string randomString = GetRandomString();
+		string inputPassword = randomString;
 		
 		regionProcessingServiceMock.Setup(x =>
 				x.VerifyRegionExistsAsync(userRegionId))
@@ -29,7 +31,7 @@ public partial class UserOrchestrationServiceTests
 			.ReturnsAsync(storageUser);
 		
 		// when
-		User actualUser = await userOrchestrationService.CreateUserAsync(inputUser);
+		User actualUser = await userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
 		
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);

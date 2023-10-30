@@ -19,7 +19,7 @@ public partial class UserOrchestrationService : IUserOrchestrationService
 		this.loggingBroker = loggingBroker;
 	}
 
-	public async ValueTask<User> CreateUserAsync(User user) =>
+	public async ValueTask<User> CreateUserAsync(User user, string password) =>
 		await TryCatch(async () =>
 			{
 				await regionProcessingService.ThrowIfRegionNotExistsAsync(user.RegionId);

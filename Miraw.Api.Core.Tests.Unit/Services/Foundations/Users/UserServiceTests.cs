@@ -75,7 +75,8 @@ public partial class UserServiceTests
 			.OnProperty(x => x.Gender)
 			.Use(randomGender)
 			.OnProperty(x => x.Region)
-			.IgnoreIt();
+			.IgnoreIt()
+			.OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
 		return filler;
 	}

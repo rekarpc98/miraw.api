@@ -45,11 +45,9 @@ public partial class UserProcessingServiceTests
 		var randomGender = (Gender)randomNumber;
 
 		filler.Setup()
-			.OnProperty(x => x.CreatedDate)
-			.Use(date)
-			.OnProperty(x => x.UpdatedDate)
-			.Use(date)
-			.OnProperty(x => x.DeletedDate)
+			.OnType<DateTimeOffset>()
+			.Use(GetRandomDateTime())
+			.OnType<DateTimeOffset?>()
 			.IgnoreIt()
 			.OnProperty(x => x.DeletedBy)
 			.IgnoreIt()
@@ -87,13 +85,16 @@ public partial class UserProcessingServiceTests
 			.Use(regionId)
 			.OnProperty(x => x.Region)
 			.IgnoreIt()
-			.OnProperty(x => x.UpdatedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.DeletedDate)
-			.IgnoreIt()
-			.OnProperty(x => x.CreatedDate)
+			.OnType<DateTimeOffset>()
+			.Use(GetRandomDateTime())
+			.OnType<DateTimeOffset?>()
 			.IgnoreIt();
 
 		return filler;
+	}
+
+	private static DateTimeOffset GetRandomDateTime()
+	{
+		return new DateTimeRange(earliestDate: new DateTime()).GetValue();
 	}
 }
