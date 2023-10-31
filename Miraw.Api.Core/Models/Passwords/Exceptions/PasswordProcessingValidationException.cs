@@ -9,10 +9,3 @@ public class PasswordProcessingValidationException : Xeption
 	{
 	}
 }
-public class InvalidPasswordException : Xeption
-{
-	public InvalidPasswordException()
-		: base(message: "Password validation error occurred, please try again.")
-	{
-	}
-}

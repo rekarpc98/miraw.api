@@ -49,7 +49,7 @@ public partial class PasswordProcessingServiceTest
 
 	private static string GetRandomPasswordString(int count)
 	{
-		string passwordString = new MnemonicString().GetValue();
+		string passwordString = new MnemonicString(count).GetValue();
 		return passwordString.Substring(0, count);
 	}
 
