@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Miraw.Api.Core.Models.Commons;
+using Miraw.Api.Core.Models.Users;
 
-namespace Miraw.Api.Core.Models.Users;
+namespace Miraw.Api.Core.Models.Passwords;
 
 public class Password : Record
 {

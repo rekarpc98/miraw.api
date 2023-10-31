@@ -1,4 +1,5 @@
 ﻿using Miraw.Api.Core.Models.Commons;
+using Miraw.Api.Core.Models.Passwords;
 using Miraw.Api.Core.Models.Regions;
 
 namespace Miraw.Api.Core.Models.Users;
