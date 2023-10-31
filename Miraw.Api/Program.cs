@@ -38,6 +38,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 return;
 
 static void AddFoundationServices(IServiceCollection services, IConfiguration configuration)
