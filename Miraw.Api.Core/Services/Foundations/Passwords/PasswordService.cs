@@ -1,4 +1,5 @@
-﻿using Miraw.Api.Core.Brokers.Storages;
+﻿using System.Net.Sockets;
+using Miraw.Api.Core.Brokers.Storages;
 using Miraw.Api.Core.Models.Passwords;
 
 namespace Miraw.Api.Core.Services.Foundations.Passwords;
@@ -12,10 +13,8 @@ public class PasswordService : IPasswordService
 		this.storageBroker = storageBroker;
 	}
 	
-	public async ValueTask<Password> CreatePasswordAsync(Password password)
-	{
-		throw new NotImplementedException();
-	}
+	public async ValueTask<Password> CreatePasswordAsync(Password password) => 
+		await storageBroker.InsertPasswordAsync(password);
 
 	public async ValueTask<Password> UpdatePasswordAsync(Password password)
 	{
