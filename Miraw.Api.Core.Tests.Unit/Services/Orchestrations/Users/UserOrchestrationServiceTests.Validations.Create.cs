@@ -27,8 +27,7 @@ public partial class UserOrchestrationServiceTests
 		regionProcessingServiceMock.Setup(x =>
 				x.ThrowIfRegionNotExistsAsync(userRegionId))
 			.ThrowsAsync(regionProcessingDependencyValidationException);
-
-
+		
 		var expectedUserOrchestrationException =
 			new UserOrchestrationDependencyValidationException(notfoundRegionException);
 

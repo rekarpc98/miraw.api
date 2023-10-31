@@ -7,7 +7,7 @@ namespace Miraw.Api.Core.Brokers.Storages;
 public partial class StorageBroker : DbContext, IStorageBroker
 {
 	private readonly IConfiguration configuration;
-	
+
 	public StorageBroker(IConfiguration configuration)
 	{
 		this.configuration = configuration;
@@ -29,7 +29,8 @@ public partial class StorageBroker : DbContext, IStorageBroker
 
 	private IQueryable<T> SelectAll<T>() where T : class => Set<T>();
 
-	private async ValueTask<T?> SelectAsync<T>(params object[] @objectIds) where T : class => await FindAsync<T>(objectIds);
+	private async ValueTask<T?> SelectAsync<T>(params object[] @objectIds) where T : class =>
+		await FindAsync<T>(objectIds);
 
 	private async ValueTask<T> UpdateAsync<T>(T @object)
 	{
