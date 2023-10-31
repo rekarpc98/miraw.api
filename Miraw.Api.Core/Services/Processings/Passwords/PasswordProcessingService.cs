@@ -37,11 +37,9 @@ public partial class PasswordProcessingService : IPasswordProcessingService
 		}
 	}
 
-	public string HashPasswordString(string passwordString)
-	{
-		return SecurePasswordHasher.Hash(passwordString);
-	}
-	
+	public string HashPasswordString(string passwordString) => 
+		SecurePasswordHasher.Hash(passwordString);
+
 	public void VerifyPasswordString(string passwordString, string hashedPasswordString)
 	{
 		throw new NotImplementedException();
