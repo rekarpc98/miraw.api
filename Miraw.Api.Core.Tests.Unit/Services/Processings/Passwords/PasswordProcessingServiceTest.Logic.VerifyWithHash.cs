@@ -14,7 +14,6 @@ public partial class PasswordProcessingServiceTest
 		string passwordHash = SecurePasswordHasher.Hash(inputPasswordString);
 
 		// when
-		// void VerifyPasswordString(string passwordString, string hashedPasswordString);
 		Action verifyPasswordAction =
 			() => passwordProcessingService.VerifyPasswordString(inputPasswordString, passwordHash);
 
