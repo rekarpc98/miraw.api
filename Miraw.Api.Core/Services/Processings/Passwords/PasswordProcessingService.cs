@@ -42,6 +42,28 @@ public partial class PasswordProcessingService : IPasswordProcessingService
 
 	public void VerifyPasswordString(string passwordString, string hashedPasswordString)
 	{
-		return;
+		try
+		{
+			VerifyPassword(passwordString, hashedPasswordString);
+		}
+		catch (IncorrectPasswordException incorrectPasswordException)
+		{
+			var passwordProcessingValidationException =
+				new PasswordProcessingValidationException(incorrectPasswordException);
+			
+			loggingBroker.LogError(passwordProcessingValidationException);
+			
+			throw passwordProcessingValidationException; 
+		}
+	}
+
+	private static void VerifyPassword(string passwordString, string hashedPasswordString)
+	{
+		bool verify = SecurePasswordHasher.Verify(passwordString, hashedPasswordString);
+
+		if (verify == false)
+		{
+			throw new IncorrectPasswordException();
+		}
 	}
 }
