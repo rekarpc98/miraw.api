@@ -1,9 +1,17 @@
-﻿using Miraw.Api.Core.Models.Passwords;
+﻿using Miraw.Api.Core.Brokers.Storages;
+using Miraw.Api.Core.Models.Passwords;
 
 namespace Miraw.Api.Core.Services.Foundations.Passwords;
 
 public class PasswordService : IPasswordService
 {
+	private readonly IStorageBroker storageBroker;
+
+	public PasswordService(IStorageBroker storageBroker)
+	{
+		this.storageBroker = storageBroker;
+	}
+	
 	public async ValueTask<Password> CreatePasswordAsync(Password password)
 	{
 		throw new NotImplementedException();
