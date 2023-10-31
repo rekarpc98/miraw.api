@@ -13,7 +13,6 @@ public partial class UserService
 			(IsInvalid(user.Name), nameof(user.Name)),
 			(IsInvalid(user.CreatedDate), nameof(user.CreatedDate)),
 			(IsInvalid(user.UpdatedDate), nameof(user.UpdatedDate)),
-			(IsInvalid(user.Email), nameof(user.Email)),
 			(IsInvalidEmail(user.Email), nameof(user.Email)),
 			(IsInvalid(user.RegionId), nameof(user.RegionId)),
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
@@ -29,7 +28,6 @@ public partial class UserService
 			(IsInvalid(user.Name), nameof(user.Name)),
 			(IsInvalid(user.CreatedDate), nameof(user.CreatedDate)),
 			(IsInvalid(user.UpdatedDate), nameof(user.UpdatedDate)),
-			(IsInvalid(user.Email), nameof(user.Email)),
 			(IsInvalidEmail(user.Email), nameof(user.Email)),
 			(IsInvalid(user.RegionId), nameof(user.RegionId)),
 			(IfNotNullIsInvalidLength(user.PhoneNumber, 13), nameof(user.PhoneNumber)),
@@ -40,7 +38,8 @@ public partial class UserService
 		);
 	}
 
-	private static ValidationRule IsInvalid(Guid id) => new() { Condition = id == Guid.Empty, Message = "Invalid guid id" };
+	private static ValidationRule IsInvalid(Guid id) =>
+		new() { Condition = id == Guid.Empty, Message = "Invalid guid id" };
 
 	private static ValidationRule IfNotNullIsInvalidLength(string? text, int length)
 	{
@@ -79,8 +78,12 @@ public partial class UserService
 	private static ValidationRule IsInvalid(string text) =>
 		new() { Condition = string.IsNullOrWhiteSpace(text), Message = "Text is required" };
 
-	private static ValidationRule IsInvalidEmail(string emailText) =>
-		new() { Condition = !emailText.Contains('@'), Message = "Email is invalid" };
+	private static ValidationRule IsInvalidEmail(string? emailText)
+	{
+		return emailText is null
+			? new ValidationRule()
+			: new ValidationRule { Condition = !emailText.Contains('@'), Message = "Email is invalid" };
+	}
 
 	private static ValidationRule IsInvalid(DateTimeOffset date) =>
 		new() { Condition = date == default, Message = "Date is required" };
@@ -91,8 +94,12 @@ public partial class UserService
 	private static ValidationRule IsSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) =>
 		new ValidationRule { Condition = firstDate == secondDate, Message = $"Date is the same as {secondDateName}" };
 
-	private static ValidationRule IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) =>
-		new ValidationRule { Condition = firstDate != secondDate, Message = $"Date is not the same as {secondDateName}" };
+	private static ValidationRule
+		IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) =>
+		new ValidationRule
+		{
+			Condition = firstDate != secondDate, Message = $"Date is not the same as {secondDateName}"
+		};
 
 	private static ValidationRule IsNotSame(Guid firstId, Guid secondId, string secondIdName) =>
 		new() { Condition = firstId != secondId, Message = $"Id is not the same as {secondIdName}" };
@@ -159,7 +166,7 @@ public partial class UserService
 	}
 
 	private static void ValidateUserName(string userName)
-	{ 
+	{
 		Validate((IsInvalid(userName), nameof(userName)));
 	}
 }

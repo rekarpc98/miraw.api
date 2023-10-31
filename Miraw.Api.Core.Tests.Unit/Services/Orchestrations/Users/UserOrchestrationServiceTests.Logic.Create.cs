@@ -19,8 +19,6 @@ public partial class UserOrchestrationServiceTests
 		User inputUser = randomUser;
 		User storageUser = inputUser;
 		User expectedUser = inputUser.DeepClone();
-		string randomString = GetRandomString();
-		string inputPassword = randomString;
 		
 		regionProcessingServiceMock.Setup(x =>
 				x.VerifyRegionExistsAsync(userRegionId))
@@ -31,7 +29,7 @@ public partial class UserOrchestrationServiceTests
 			.ReturnsAsync(storageUser);
 		
 		// when
-		User actualUser = await userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
+		User actualUser = await userOrchestrationService.CreateUserAsync(inputUser);
 		
 		// then
 		actualUser.Should().BeEquivalentTo(expectedUser);
@@ -42,6 +40,10 @@ public partial class UserOrchestrationServiceTests
 		
 		userProcessingServiceMock.Verify(x =>
 				x.RegisterUserAsync(inputUser),
+			Times.Once);
+		
+		userProcessingServiceMock.Verify(x =>
+				x.RetrieveUserByPhoneNumberAsync(It.IsAny<string>()),
 			Times.Once);
 		
 		regionProcessingServiceMock.VerifyNoOtherCalls();

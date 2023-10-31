@@ -1,6 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Security.Cryptography;
-using System.Text;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Models.Regions;
 using Miraw.Api.Core.Models.Users;
@@ -111,23 +109,5 @@ public partial class UserOrchestrationServiceTests
 	{
 		return new DateTimeRange(earliestDate: new DateTime()).GetValue();
 	}
-
-	private static string GetRandomString()
-	{
-		return new MnemonicString().GetValue();
-	}
-
-	private static string HashString(string text)
-    {
-        byte[] hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(text));
-
-        var sb = new StringBuilder();
-        foreach (byte b in hashedBytes)
-        {
-            sb.Append(b.ToString("x2"));
-        }
-
-        return sb.ToString();
-    }
 
 }

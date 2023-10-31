@@ -18,8 +18,6 @@ public partial class UserOrchestrationServiceTests
 		Guid userRegionId = invalidRegionId;
 		User randomUser = CreateRandomUser(regionId: userRegionId);
 		User inputUser = randomUser;
-		string randomString = GetRandomString();
-		string inputPassword = randomString;
 
 		var notfoundRegionException = new NotFoundRegionException(invalidRegionId);
 
@@ -35,7 +33,7 @@ public partial class UserOrchestrationServiceTests
 			new UserOrchestrationDependencyValidationException(notfoundRegionException);
 
 		// when
-		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
+		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser);
 
 		// then
 		await Assert.ThrowsAsync<UserOrchestrationDependencyValidationException>(() => registerUserTask.AsTask());
@@ -55,8 +53,6 @@ public partial class UserOrchestrationServiceTests
 		// given
 		User invalidUser = CreateInvalidUser(invalidEmail: true, invalidPhoneNumber: false);
 		User inputUser = invalidUser;
-		string randomString = GetRandomString();
-		string inputPassword = randomString;
 		
 		var invalidUserException = new InvalidUserException();
 
@@ -80,21 +76,25 @@ public partial class UserOrchestrationServiceTests
 			new UserOrchestrationDependencyValidationException(invalidUserException);
 
 		// when
-		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser, inputPassword);
+		ValueTask<User> registerUserTask = userOrchestrationService.CreateUserAsync(inputUser);
 
 		// then
 		await Assert.ThrowsAsync<UserOrchestrationDependencyValidationException>(() => registerUserTask.AsTask());
 
 		loggingBrokerMock.Verify(x => x.LogError(It.Is(SameExceptionAs(expectedUserOrchestrationException))));
-
-		userProcessingServiceMock.Verify(x =>
-				x.RegisterUserAsync(It.IsAny<User>()),
-			Times.Once);
-
+		
 		regionProcessingServiceMock.Verify(x =>
 				x.ThrowIfRegionNotExistsAsync(inputUser.RegionId),
 			Times.Once);
 
+		userProcessingServiceMock.Verify(x =>
+				x.RegisterUserAsync(inputUser),
+			Times.Once);
+		
+		userProcessingServiceMock.Verify(x =>
+				x.RetrieveUserByPhoneNumberAsync(It.IsAny<string>()),
+			Times.Once);
+		
 		regionProcessingServiceMock.VerifyNoOtherCalls();
 		userProcessingServiceMock.VerifyNoOtherCalls();
 		loggingBrokerMock.VerifyNoOtherCalls();
