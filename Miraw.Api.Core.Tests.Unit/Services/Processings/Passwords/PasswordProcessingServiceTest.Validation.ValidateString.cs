@@ -14,12 +14,13 @@ public partial class PasswordProcessingServiceTest
 		// given 
 		string shortRandomPasswordString = GetRandomPasswordString(4);
 		string inputPasswordString = shortRandomPasswordString;
+		const int minAllowedLength = 5;
 		
 		var invalidPasswordException = new InvalidPasswordException();
 
 		invalidPasswordException.UpsertDataList(
-			key: "Password",
-			value: "At least 5 characters expected");
+			key: "Length",
+			value: $"Password should be at least {minAllowedLength} characters long.");
 
 		var expectedPasswordValidationException =
 			new PasswordProcessingValidationException(invalidPasswordException);
