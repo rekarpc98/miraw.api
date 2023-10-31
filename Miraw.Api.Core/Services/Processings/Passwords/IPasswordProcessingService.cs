@@ -5,4 +5,5 @@ namespace Miraw.Api.Core.Services.Processings.Passwords;
 public interface IPasswordProcessingService
 {
 	ValueTask<Password> CreatePasswordAsync(Password password);
+	void ValidatePasswordString(string passwordString);
 }
