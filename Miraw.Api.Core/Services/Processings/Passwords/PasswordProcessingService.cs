@@ -12,8 +12,6 @@ public class PasswordProcessingService : IPasswordProcessingService
 		this.passwordService = passwordService;
 	}
 	
-	public async ValueTask<Password> CreatePasswordAsync(Password password)
-	{
-		throw new NotImplementedException();
-	}
+	public async ValueTask<Password> CreatePasswordAsync(Password password) => 
+		await passwordService.CreatePasswordAsync(password);
 }

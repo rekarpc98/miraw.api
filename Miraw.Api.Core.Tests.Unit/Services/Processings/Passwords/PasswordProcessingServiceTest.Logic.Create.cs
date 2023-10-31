@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Force.DeepCloner;
 using Miraw.Api.Core.Models.Passwords;
 using Moq;
 
@@ -13,7 +14,7 @@ public partial class PasswordProcessingServiceTest
 		Password randomPassword = CreateRandomPassword();
 		Password inputPassword = randomPassword;
 		Password storagePassword = randomPassword;
-		Password expectedPassword = storagePassword;
+		Password expectedPassword = storagePassword.DeepClone();
 
 		passwordServiceMock.Setup(broker =>
 				broker.CreatePasswordAsync(inputPassword))
