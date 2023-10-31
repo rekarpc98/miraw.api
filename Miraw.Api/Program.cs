@@ -2,7 +2,12 @@ using Exceptionless;
 using Miraw.Api.Core.Brokers.DateTimes;
 using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Brokers.Storages;
+using Miraw.Api.Core.Services.Foundations.Operators;
+using Miraw.Api.Core.Services.Foundations.Passwords;
+using Miraw.Api.Core.Services.Foundations.Regions;
 using Miraw.Api.Core.Services.Foundations.Users;
+using Miraw.Api.Core.Services.Foundations.ZoneOperators;
+using Miraw.Api.Core.Services.Foundations.Zones;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +15,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IUserService, UserService>();
+AddFoundationServices(builder.Services, builder.Configuration);
+AddBrokers(builder.Services, builder.Configuration);
 
-builder.Services.AddScoped<IStorageBroker, StorageBroker>();
-builder.Services.AddScoped<IDateTimeBroker, DateTimeBroker>();
-builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
-
-// Exceptionless__ApiKey
-var exceptionlessApiKey = builder.Configuration.GetSection("Exceptionless:ApiKey").Value;
+string? exceptionlessApiKey = builder.Configuration.GetSection("Exceptionless:ApiKey").Value;
 builder.Services.AddExceptionless(exceptionlessApiKey!);
 
 WebApplication app = builder.Build();
@@ -37,3 +38,21 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+return;
+
+static void AddFoundationServices(IServiceCollection services, IConfiguration configuration)
+{
+	services.AddScoped<IUserService, UserService>()
+		.AddScoped<IRegionService, RegionService>()
+		.AddScoped<IPasswordService, PasswordService>()
+		.AddScoped<IZoneService, ZoneService>()
+		.AddScoped<IZoneOperatorService, ZoneOperatorService>()
+		.AddScoped<IOperatorService, OperatorService>();
+}
+
+static void AddBrokers(IServiceCollection services, IConfiguration configuration)
+{
+	services.AddScoped<IStorageBroker, StorageBroker>();
+	services.AddScoped<IDateTimeBroker, DateTimeBroker>();
+	services.AddScoped<ILoggingBroker, LoggingBroker>();
+}
