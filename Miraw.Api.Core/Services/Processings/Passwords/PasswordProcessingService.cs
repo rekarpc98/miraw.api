@@ -2,6 +2,7 @@
 using Miraw.Api.Core.Models.Passwords;
 using Miraw.Api.Core.Models.Passwords.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Passwords;
+using Miraw.Api.Core.Utilities;
 
 namespace Miraw.Api.Core.Services.Processings.Passwords;
 
@@ -38,7 +39,7 @@ public partial class PasswordProcessingService : IPasswordProcessingService
 
 	public string HashPasswordString(string passwordString)
 	{
-		throw new NotImplementedException();
+		return SecurePasswordHasher.Hash(passwordString);
 	}
 	
 	public void VerifyPasswordString(string passwordString, string hashedPasswordString)
