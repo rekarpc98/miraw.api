@@ -32,7 +32,7 @@ public partial class PasswordProcessingServiceTest
 		// then
 		Assert.Throws<PasswordProcessingValidationException>(validatePasswordStringTask);
 
-		loggingBroker.Verify(broker =>
+		loggingBrokerMock.Verify(broker =>
 				broker.LogError(It.Is(SameExceptionAs(expectedPasswordValidationException))),
 			Times.Once);
 	}

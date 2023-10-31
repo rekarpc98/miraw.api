@@ -35,4 +35,14 @@ public partial class PasswordProcessingService : IPasswordProcessingService
 			throw passwordProcessingValidationException; 
 		}
 	}
+
+	public string HashPasswordString(string passwordString)
+	{
+		throw new NotImplementedException();
+	}
+	
+	public void VerifyPasswordString(string passwordString, string hashedPasswordString)
+	{
+		throw new NotImplementedException();
+	}
 }

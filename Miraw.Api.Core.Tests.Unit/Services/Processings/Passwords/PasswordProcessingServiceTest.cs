@@ -15,11 +15,11 @@ public partial class PasswordProcessingServiceTest
 {
 	private readonly IPasswordProcessingService passwordProcessingService;
 	private readonly Mock<IPasswordService> passwordServiceMock = new();
-	private readonly Mock<ILoggingBroker> loggingBroker = new();
+	private readonly Mock<ILoggingBroker> loggingBrokerMock = new();
 
 	public PasswordProcessingServiceTest()
 	{
-		passwordProcessingService = new PasswordProcessingService(passwordServiceMock.Object, loggingBroker.Object);
+		passwordProcessingService = new PasswordProcessingService(passwordServiceMock.Object, loggingBrokerMock.Object);
 	}
 
 	private Password CreateRandomPassword()
@@ -50,7 +50,7 @@ public partial class PasswordProcessingServiceTest
 	private static string GetRandomPasswordString(int count)
 	{
 		string passwordString = new MnemonicString().GetValue();
-		return passwordString[..count];
+		return passwordString.Substring(0, count);
 	}
 
 	private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException) =>
