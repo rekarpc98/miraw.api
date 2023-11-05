@@ -15,6 +15,11 @@ public partial class UserProcessingService : IUserProcessingService
 		this.loggingBroker = loggingBroker;
 	}
 
+	public ValueTask VerifyUserExistsAsync(Guid userId)
+	{
+		throw new NotImplementedException();
+	}
+
 	public async ValueTask<User> RegisterUserAsync(User user) => await userService.RegisterUserAsync(user);
 
 	public int RetrieveUsersCount()
