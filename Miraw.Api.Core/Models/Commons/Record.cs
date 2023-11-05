@@ -1,7 +1,6 @@
 ﻿namespace Miraw.Api.Core.Models.Commons;
 
-public class Record
+public interface IRecord
 {
 	public DateTimeOffset CreatedDate { get; set; }
-	public string CreatedBy { get; set; } = null!;
 }

@@ -4,7 +4,7 @@ using Miraw.Api.Core.Models.Users;
 
 namespace Miraw.Api.Core.Models.Passwords;
 
-public class Password : Record
+public class Password : IRecord
 {
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; set; }
@@ -12,4 +12,5 @@ public class Password : Record
 	public Guid UserId { get; set; }
 	public User? User { get; set; }
 	public string PasswordHash { get; set; } = null!;
+	public DateTimeOffset CreatedDate { get; set; }
 }
