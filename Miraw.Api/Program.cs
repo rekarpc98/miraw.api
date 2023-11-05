@@ -8,6 +8,7 @@ using Miraw.Api.Core.Services.Foundations.Regions;
 using Miraw.Api.Core.Services.Foundations.Users;
 using Miraw.Api.Core.Services.Foundations.ZoneOperators;
 using Miraw.Api.Core.Services.Foundations.Zones;
+using Miraw.Api.Core.Services.Orchestrations.Passwords;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-AddFoundationServices(builder.Services, builder.Configuration);
 AddBrokers(builder.Services, builder.Configuration);
+AddFoundationServices(builder.Services, builder.Configuration);
+AddOrchestrationServices(builder.Services);
 
 string? exceptionlessApiKey = builder.Configuration.GetSection("Exceptionless:ApiKey").Value;
 builder.Services.AddExceptionless(exceptionlessApiKey!);
@@ -40,6 +42,11 @@ app.MapControllers();
 app.Run();
 
 return;
+
+static void AddOrchestrationServices(IServiceCollection services)
+{
+	services.AddScoped<IPasswordOrchestrationService, PasswordOrchestrationService>();
+}
 
 static void AddFoundationServices(IServiceCollection services, IConfiguration configuration)
 {
