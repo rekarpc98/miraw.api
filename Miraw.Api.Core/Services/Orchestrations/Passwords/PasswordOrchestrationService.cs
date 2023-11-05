@@ -24,6 +24,20 @@ public class PasswordOrchestrationService : IPasswordOrchestrationService
 
 	public async ValueTask<Password> CreatePasswordForUserAsync(Guid userId, string passwordString)
 	{
-		throw new NotImplementedException();
+		await userProcessingService.VerifyUserExistsAsync(userId);
+
+		string hashedPasswordString = passwordProcessingService.HashPasswordString(passwordString);
+
+		var password = new Password
+		{
+			Id = Guid.NewGuid(),
+			UserId = userId, 
+			PasswordHash = hashedPasswordString, 
+			CreatedDate = dateTimeBroker.GetCurrentDateTime()
+		};
+		
+		Password createdPassword = await passwordProcessingService.CreatePasswordAsync(password);
+		
+		return createdPassword;
 	}
 }
