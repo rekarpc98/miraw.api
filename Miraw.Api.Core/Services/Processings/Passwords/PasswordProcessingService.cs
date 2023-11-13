@@ -3,6 +3,7 @@ using Miraw.Api.Core.Models.Passwords;
 using Miraw.Api.Core.Models.Passwords.Exceptions;
 using Miraw.Api.Core.Services.Foundations.Passwords;
 using Miraw.Api.Core.Utilities;
+using Miraw.Api.Core.Utilities.Securities;
 
 namespace Miraw.Api.Core.Services.Processings.Passwords;
 

@@ -1,5 +1,6 @@
 ﻿using Miraw.Api.Core.Models.Passwords.Exceptions;
 using Miraw.Api.Core.Utilities;
+using Miraw.Api.Core.Utilities.Securities;
 using Moq;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Passwords;

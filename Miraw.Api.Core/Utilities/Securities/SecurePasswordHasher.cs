@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Miraw.Api.Core.Utilities;
+namespace Miraw.Api.Core.Utilities.Securities;
 
 public static class SecurePasswordHasher
 {

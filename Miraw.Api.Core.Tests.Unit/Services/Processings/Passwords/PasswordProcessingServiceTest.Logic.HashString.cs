@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Miraw.Api.Core.Utilities;
+using Miraw.Api.Core.Utilities.Securities;
 
 namespace Miraw.Api.Core.Tests.Unit.Services.Processings.Passwords;
 
