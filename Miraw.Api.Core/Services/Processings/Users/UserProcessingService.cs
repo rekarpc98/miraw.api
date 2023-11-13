@@ -39,4 +39,9 @@ public partial class UserProcessingService : IUserProcessingService
 	{
 		return await userService.RetrieveUserByPhoneNumberAsync(phoneNumber);
 	}
+
+	public ValueTask<User> RetrieveUserByIdAsync(Guid Id)
+	{
+		throw new NotImplementedException();
+	}
 }

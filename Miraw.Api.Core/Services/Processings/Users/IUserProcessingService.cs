@@ -8,4 +8,5 @@ public interface IUserProcessingService
 	ValueTask<User> RegisterUserAsync(User user);
 	int RetrieveUsersCount();
 	ValueTask<User> RetrieveUserByPhoneNumberAsync(string phoneNumber);
+	ValueTask<User> RetrieveUserByIdAsync(Guid Id);
 }
