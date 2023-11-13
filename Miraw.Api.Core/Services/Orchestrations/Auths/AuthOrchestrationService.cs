@@ -1,6 +1,7 @@
 ﻿using Miraw.Api.Core.Brokers.Loggings;
 using Miraw.Api.Core.Services.Processings.Passwords;
 using Miraw.Api.Core.Services.Processings.Users;
+using Miraw.Api.Core.Utilities.Securities;
 
 namespace Miraw.Api.Core.Services.Orchestrations.Auths;
 
@@ -13,7 +14,8 @@ public class AuthOrchestrationService : IAuthOrchestrationService
 	public AuthOrchestrationService(
 		IPasswordProcessingService passwordProcessingService,
 		IUserProcessingService userProcessingService,
-		ILoggingBroker loggingBroker
+		ILoggingBroker loggingBroker,
+		IJwtTokenGenerator jwtTokenGenerator
 	)
 	{
 		this.passwordProcessingService = passwordProcessingService;

@@ -13,6 +13,7 @@ using Miraw.Api.Core.Services.Foundations.ZoneOperators;
 using Miraw.Api.Core.Services.Foundations.Zones;
 using Miraw.Api.Core.Services.Orchestrations.Auths;
 using Miraw.Api.Core.Services.Orchestrations.Passwords;
+using Miraw.Api.Core.Utilities.Securities;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
 		};
 	});
+
+builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
 WebApplication app = builder.Build();
 
